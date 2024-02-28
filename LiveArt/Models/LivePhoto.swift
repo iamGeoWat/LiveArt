@@ -14,8 +14,8 @@ typealias LivePhotoResources = (pairedImage: URL, pairedVideo: URL)
 @Model
 final class LivePhoto {
     let id: UUID
-    var livePhoto: PHLivePhoto
-    var livePhotoResources: LivePhotoResources
+    var livePhoto: PHLivePhoto?
+    var livePhotoResources: LivePhotoResources?
     
     init() {
         self.id = UUID()
