@@ -57,8 +57,9 @@ struct DoneTip: Tip {
 
 struct ProjectView: View {
     @Environment(\.presentationMode) var presentationMode
-    @State var projectId: UUID
-    @ObservedObject var viewModel: ViewModel
+    @Bindable var project: Project
+    
+    
     @State private var albumURL: String = "https://music.apple.com/us/playlist/me-and-bae/pl.a13aca4f4f2c45538472de9014057cc0"
     @State private var timer: Timer?
     @State private var currentFetchState = "Ready"
@@ -71,9 +72,9 @@ struct ProjectView: View {
     @State private var isShowingLWSaved = false
     @State private var isShowingInvokeFailed = false
         
-    private var project: ProjectModel {
-        return viewModel.projects.first(where: { $0.id == projectId })!
-    }
+//    private var project: Project {
+//        return viewModel.projects.first(where: { $0.id == projectId })!
+//    }
     
     let stepIds: [UUID] = (1...8).map { _ in UUID() }
     let fetchStates = ["Loading HTML", "Looking for video tag", "Downloading M3U8 file", "Done"]
@@ -219,8 +220,8 @@ struct ProjectView: View {
                                 .padding(.bottom, 5)
                             Text("This is a Live Photo plays at the normal speed. You can skip it if you only want the animated wallpaper.")
                                 .padding(.bottom, 10)
-                            if let model = project.livePhoto {
-                                LivePhotoViewRep(livePhoto: model.livePhoto, shouldPlay: $shouldPlayLPPreview, repetitivePlay: false)
+                            if let lp = project.livePhoto?.livePhoto {
+                                LivePhotoViewRep(livePhoto: lp, shouldPlay: $shouldPlayLPPreview, repetitivePlay: false)
                                     .aspectRatio(contentMode: .fit)
                                     .frame(minWidth: 0, maxWidth: 220, maxHeight: 220)
                                     .clipped()
@@ -252,7 +253,7 @@ struct ProjectView: View {
                                         print("live photo not in project")
                                         return
                                     }
-                                    viewModel.saveLivePhotoToLibrary(from: livePhoto.livePhotoResources)
+                                    saveLivePhotoToLibrary(from: livePhoto.livePhotoResources)
                                     print("saving")
                                     isShowingLPSaved = true
                                 }
@@ -294,8 +295,8 @@ struct ProjectView: View {
                                 .padding(.bottom, 5)
                             Text("This Live Photo has been sped up and had its metadata multiplexed to meet Live Wallpaper standards, making it likely to be accepted by iOS as a Live Wallpaper.")
                                 .padding(.bottom, 10)
-                            if let model = project.liveWallpaper {
-                                LivePhotoViewRep(livePhoto: model.livePhoto, shouldPlay: $shouldPlayLWPreview, repetitivePlay: false)
+                            if let lp = project.liveWallpaper?.livePhoto {
+                                LivePhotoViewRep(livePhoto: lp, shouldPlay: $shouldPlayLWPreview, repetitivePlay: false)
                                     .aspectRatio(9/16, contentMode: .fit)
                                     .frame(minWidth: 0, maxWidth: 220)
                                     .clipped()
@@ -330,7 +331,7 @@ struct ProjectView: View {
                                         print("Live wallpaper not in project")
                                         return
                                     }
-                                    viewModel.saveLivePhotoToLibrary(from: liveWallpaper.livePhotoResources)
+                                    saveLivePhotoToLibrary(from: liveWallpaper.livePhotoResources)
                                     isShowingLWSaved = true
                                     print("saving")
                                 }
@@ -383,12 +384,12 @@ struct ProjectView: View {
                                 }
                                 .buttonStyle(BorderedButtonStyle())
                                 .sheet(isPresented: $isShowingShareSheet) {
-                                    if let shortcutURL = viewModel.shortcutModel.shortcutURL {
+                                    if let shortcutURL = getShortcutURL() {
                                         ActivityView(activityItems: [shortcutURL])
                                     }
                                 }
                                 Button("Set") {
-                                    viewModel.invokeShortcut(completion: { success in
+                                    invokeShortcut(completion: { success in
                                         if !success {
                                             isShowingInvokeFailed = true
                                         }
@@ -401,7 +402,7 @@ struct ProjectView: View {
                                 Button("Finish") {
                                     print("go next")
                                     goToStep(6, with: proxy)
-                                    viewModel.updateProject(id: project.id, property: \.workInProgress, newValue: false)
+                                    project.workInProgress = false
                                 }
                                 .buttonStyle(BorderedProminentButtonStyle())
                                 Spacer()
@@ -449,7 +450,7 @@ struct ProjectView: View {
                         }
                         VStack {
                             VStack {
-                                ResultView(viewModel: viewModel, projectId: project.id)
+                                ResultView(project: project)
                             }
                             .frame(maxWidth: 500)
                             Spacer()
@@ -488,7 +489,7 @@ struct ProjectView: View {
                         return
                     }
                     withAnimation {
-                        viewModel.updateProject(id: project.id, property: \.livePhoto, newValue: LivePhotoModel(livePhoto: livePhoto, livePhotoResources: (pairedImage: photoURL, pairedVideo: videoURL)))
+                        project.livePhoto = LivePhoto(livePhoto: livePhoto, livePhotoResources: (pairedImage: photoURL, pairedVideo: videoURL))
                         progressLabel.wrappedValue = "Live Photo generated..."
                         progress.wrappedValue = 50
                         completion()
@@ -516,7 +517,7 @@ struct ProjectView: View {
                         return
                     }
                     withAnimation {
-                        viewModel.updateProject(id: project.id, property: \.liveWallpaper, newValue: LivePhotoModel(livePhoto: livePhoto, livePhotoResources: (pairedImage: photoURL, pairedVideo: videoURL)))
+                        project.liveWallpaper = LivePhoto(livePhoto: livePhoto, livePhotoResources: (pairedImage: photoURL, pairedVideo: videoURL))
                         progressLabel.wrappedValue = "Live Wallpaper generated. Done."
                         progress.wrappedValue = 100
                         completion()
@@ -546,7 +547,7 @@ struct ProjectView: View {
     
     func goToStep(_ step: Int, with proxy: ScrollViewProxy) {
         withAnimation(.easeInOut(duration: 0.75)) {
-            viewModel.updateProject(id: project.id, property: \.currentStep, newValue: step)
+            project.currentStep = step
             proxy.scrollTo(stepIds[step], anchor: .top)
         }
     }
@@ -566,7 +567,7 @@ struct ProjectView: View {
                 index += 1
             } else {
                 withAnimation(.easeInOut(duration: 0.75)) {
-                    viewModel.updateProject(id: project.id, property: \.name, newValue: "emoji")
+                    project.name = "emoji"
                 }
                 goToStep(2, with: scrollViewProxy)
                 timer?.invalidate()
@@ -576,18 +577,14 @@ struct ProjectView: View {
 }
 
 struct ProjectViewPreview: View {
-    @State private var viewModel = ViewModel()
-    var previewProject = ProjectModel(name: "speak_now", type: .LiveAlbum, creationDate: todayDate, coverPhoto: "sos_photo", currentStep: 6, workInProgress: true, livePhoto: nil)
+    var previewProject = Project(name: "speak_now", type: .LiveAlbum)
     static func printDocumentDirectoryPath() {
         if let path = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first {
             print("Document Directory Path: \(path)")
         }
     }
-    init() {
-        viewModel.addProject(previewProject)
-    }
     var body: some View {
-        ProjectView(projectId: previewProject.id, viewModel: viewModel)
+        ProjectView(project: previewProject)
             .onAppear {
                 ProjectViewPreview.printDocumentDirectoryPath()
             }

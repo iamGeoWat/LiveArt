@@ -23,6 +23,7 @@ struct NewProjectTip: Tip {
 struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
     @Query private var items: [Item]
+    @Query private var projects: [Project]
     
     
 
@@ -30,7 +31,7 @@ struct ContentView: View {
     @State private var shouldPlay = false
     @State private var isShowingShareSheet = false
     @State private var showingActionSheet = false
-    @State private var presentedProjects: [ProjectModel] = []
+    @State private var presentedProjects: [Project] = []
     @State private var showNewUserGuide = true
     @State private var showNewProjectTip = false
         
@@ -73,13 +74,13 @@ struct ContentView: View {
                     ActionSheet(title: Text("Choose Project Type"), message: Text("Choose your Live Photo's video source. You can select a live album art from Apple Music or a video from your Photos library."), buttons: [
                         .cancel(),
                         .default(Text("Create Live Album Art")) {
-                            let newAlbumProject = ProjectModel(name: "New Project", type: .LiveAlbum, creationDate: todayDate, coverPhoto: nil, currentStep: 1, workInProgress: true, livePhoto: nil)
-                            viewModel.projects.append(newAlbumProject)
+                            let newAlbumProject = Project(name: "New Project", type: .LiveAlbum, creationDate: todayDate, coverPhoto: nil, currentStep: 1, workInProgress: true, livePhoto: nil)
+                            modelContext.insert(newAlbumProject)
                             presentedProjects.append(newAlbumProject)
                         },
                         .default(Text("WIP: Create Live Photo from Video")) {
-                            let newVideoProject = ProjectModel(name: "New Project", type: .LiveAlbum, creationDate: todayDate, coverPhoto: nil, currentStep: 1, workInProgress: true, livePhoto: nil)
-                            viewModel.projects.append(newVideoProject)
+                            let newVideoProject = Project(name: "New Project", type: .LiveAlbum, creationDate: todayDate, coverPhoto: nil, currentStep: 1, workInProgress: true, livePhoto: nil)
+                            modelContext.insert(newVideoProject)
                             presentedProjects.append(newVideoProject)
                         },
                     ])
@@ -96,7 +97,7 @@ struct ContentView: View {
                         .fontDesign(.monospaced)
                         .font(.title) // Makes the text larger
                         .fontWeight(.bold) // Makes the text bolder
-                    Text("\(viewModel.projects.count)")
+                    Text("\(projects.count)")
                         .fontDesign(.rounded)
                 }
                 .frame(maxWidth: .infinity, alignment: .leading) // Aligns HStack to the left
@@ -104,11 +105,11 @@ struct ContentView: View {
                 
                 ScrollView {
                     LazyVGrid(columns: [GridItem](repeating: .init(.flexible(), spacing: 20), count: 3), spacing: 20) {
-                        ForEach(viewModel.projects) { project in
+                        ForEach(projects) { project in
                             VStack {
                                 Group {
-                                    if let lp = project.livePhoto {
-                                        LivePhotoViewRep(livePhoto: lp.livePhoto, shouldPlay: $shouldPlay, repetitivePlay: true)
+                                    if let lp = project.livePhoto?.livePhoto {
+                                        LivePhotoViewRep(livePhoto: lp, shouldPlay: $shouldPlay, repetitivePlay: true)
                                             .aspectRatio(9/16, contentMode: .fill)
                                             .cornerRadius(20)
                                     } else {
@@ -149,14 +150,14 @@ struct ContentView: View {
                 }
                 .padding(.horizontal)
             }
-            .navigationDestination(for: ProjectModel.self) { project in
-                ProjectView(projectId: project.id, viewModel: viewModel)
+            .navigationDestination(for: Project.self) { project in
+                ProjectView(project: project)
             }
         }
         .sheet(isPresented: $showNewUserGuide, onDismiss: {
             showNewProjectTip = true
         }) {
-            NewUserGuideView(show: $showNewUserGuide)
+            GuideView(show: $showNewUserGuide)
         }
     }
 }

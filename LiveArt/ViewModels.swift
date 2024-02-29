@@ -44,51 +44,6 @@ class ViewModel: ObservableObject {
         }
     }
     
-    func saveLivePhotoToLibrary(from resources: LivePhotoResources?) {
-        PHPhotoLibrary.requestAuthorization(for: .addOnly) { status in
-            switch status {
-            case .authorized:
-                print("authed, performing save")
-            default:
-                print("permission error")
-            }
-        }
-        if let resources = resources {
-            print(resources, "resources")
-            PHPhotoLibrary.shared().performChanges({
-                let creationRequest = PHAssetCreationRequest.forAsset()
-                let options = PHAssetResourceCreationOptions()
-                creationRequest.addResource(with: .photo, fileURL: resources.pairedImage, options: options)
-                creationRequest.addResource(with: .pairedVideo, fileURL: resources.pairedVideo, options: options)
-            }, completionHandler: { (success, error) in
-                if error != nil {
-                    print(error as Any)
-                    print("Live Photo Not Saved", "The live photo was not saved to Photos.")
-                }
-                print("Live Photo Saved", "The live photo was successful0ly saved to Photos.")
-            })
-        }
-    }
     
-    func loadShortcut() {
-        guard let shortcutURL = Bundle.main.url(forResource: "Set LivePhoto Wallpaper", withExtension: "shortcut") else {
-            print("Shortcut file not found in bundle.")
-            return
-        }
-        shortcutModel.shortcutURL = shortcutURL
-    }
-    
-    func invokeShortcut(completion: @escaping (Bool) -> Void) {
-        if let shortcutURL = shortcutModel.shortcutURLScheme {
-            if UIApplication.shared.canOpenURL(shortcutURL) {
-                UIApplication.shared.open(shortcutURL) { result in
-                    completion(result)
-                }
-                completion(true)
-            } else {
-                completion(false)
-            }
-        }
-    }
 }
 

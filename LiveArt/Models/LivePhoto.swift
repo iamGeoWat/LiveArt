@@ -11,8 +11,7 @@ import SwiftData
 
 typealias LivePhotoResources = (pairedImage: URL, pairedVideo: URL)
 
-@Model
-final class LivePhoto {
+struct LivePhoto {
     let id: UUID
     var livePhoto: PHLivePhoto?
     var livePhotoResources: LivePhotoResources?
@@ -20,4 +19,21 @@ final class LivePhoto {
     init() {
         self.id = UUID()
     }
+    
+    init(livePhoto: PHLivePhoto, livePhotoResources: LivePhotoResources) {
+        self.id = UUID()
+        self.livePhoto = livePhoto
+        self.livePhotoResources = livePhotoResources
+    }
 }
+
+//@Model
+//final class LivePhoto {
+//    let id: UUID
+//    var livePhoto: PHLivePhoto?
+//    var livePhotoResources: LivePhotoResources?
+//    
+//    init() {
+//        self.id = UUID()
+//    }
+//}
