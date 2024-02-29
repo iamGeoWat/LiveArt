@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2B120CF12B9133C0004CC4E6 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 2B120CF02B9133C0004CC4E6 /* .gitignore */; };
 		FA32618C2B8F173900C1E5B2 /* LiveArtApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA32618B2B8F173900C1E5B2 /* LiveArtApp.swift */; };
 		FA32618E2B8F173900C1E5B2 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA32618D2B8F173900C1E5B2 /* ContentView.swift */; };
 		FA3261902B8F173900C1E5B2 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA32618F2B8F173900C1E5B2 /* Item.swift */; };
@@ -18,6 +19,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		2B120CF02B9133C0004CC4E6 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		FA3261882B8F173900C1E5B2 /* LiveArt.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LiveArt.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FA32618B2B8F173900C1E5B2 /* LiveArtApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveArtApp.swift; sourceTree = "<group>"; };
 		FA32618D2B8F173900C1E5B2 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -43,6 +45,7 @@
 		FA32617F2B8F173900C1E5B2 = {
 			isa = PBXGroup;
 			children = (
+				2B120CF02B9133C0004CC4E6 /* .gitignore */,
 				FA32618A2B8F173900C1E5B2 /* LiveArt */,
 				FA3261892B8F173900C1E5B2 /* Products */,
 			);
@@ -154,6 +157,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				FA3261952B8F173A00C1E5B2 /* Preview Assets.xcassets in Resources */,
+				2B120CF12B9133C0004CC4E6 /* .gitignore in Resources */,
 				FA3261922B8F173A00C1E5B2 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
