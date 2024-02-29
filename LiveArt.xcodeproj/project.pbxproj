@@ -8,6 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		2B120CF12B9133C0004CC4E6 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 2B120CF02B9133C0004CC4E6 /* .gitignore */; };
+		2B120CF42B9135E5004CC4E6 /* ProjectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B120CF32B9135E5004CC4E6 /* ProjectView.swift */; };
+		2B120CF62B91360C004CC4E6 /* ResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B120CF52B91360C004CC4E6 /* ResultView.swift */; };
+		2B120CF82B91364F004CC4E6 /* LivePhotoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B120CF72B91364F004CC4E6 /* LivePhotoView.swift */; };
+		2B120CFA2B91365F004CC4E6 /* ActivityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B120CF92B91365F004CC4E6 /* ActivityView.swift */; };
+		2B120CFC2B913672004CC4E6 /* GuideView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B120CFB2B913672004CC4E6 /* GuideView.swift */; };
 		FA32618C2B8F173900C1E5B2 /* LiveArtApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA32618B2B8F173900C1E5B2 /* LiveArtApp.swift */; };
 		FA32618E2B8F173900C1E5B2 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA32618D2B8F173900C1E5B2 /* ContentView.swift */; };
 		FA3261902B8F173900C1E5B2 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA32618F2B8F173900C1E5B2 /* Item.swift */; };
@@ -20,6 +25,11 @@
 
 /* Begin PBXFileReference section */
 		2B120CF02B9133C0004CC4E6 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
+		2B120CF32B9135E5004CC4E6 /* ProjectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectView.swift; sourceTree = "<group>"; };
+		2B120CF52B91360C004CC4E6 /* ResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultView.swift; sourceTree = "<group>"; };
+		2B120CF72B91364F004CC4E6 /* LivePhotoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LivePhotoView.swift; sourceTree = "<group>"; };
+		2B120CF92B91365F004CC4E6 /* ActivityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityView.swift; sourceTree = "<group>"; };
+		2B120CFB2B913672004CC4E6 /* GuideView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GuideView.swift; sourceTree = "<group>"; };
 		FA3261882B8F173900C1E5B2 /* LiveArt.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LiveArt.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FA32618B2B8F173900C1E5B2 /* LiveArtApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveArtApp.swift; sourceTree = "<group>"; };
 		FA32618D2B8F173900C1E5B2 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -42,6 +52,18 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2B120CF22B9135C7004CC4E6 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				2B120CF32B9135E5004CC4E6 /* ProjectView.swift */,
+				2B120CF52B91360C004CC4E6 /* ResultView.swift */,
+				2B120CF72B91364F004CC4E6 /* LivePhotoView.swift */,
+				2B120CF92B91365F004CC4E6 /* ActivityView.swift */,
+				2B120CFB2B913672004CC4E6 /* GuideView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
 		FA32617F2B8F173900C1E5B2 = {
 			isa = PBXGroup;
 			children = (
@@ -62,6 +84,7 @@
 		FA32618A2B8F173900C1E5B2 /* LiveArt */ = {
 			isa = PBXGroup;
 			children = (
+				2B120CF22B9135C7004CC4E6 /* Views */,
 				FA3261A22B8F24F900C1E5B2 /* Utils */,
 				FA3261A12B8F24E200C1E5B2 /* Models */,
 				FA32618B2B8F173900C1E5B2 /* LiveArtApp.swift */,
@@ -172,7 +195,12 @@
 				FA32618E2B8F173900C1E5B2 /* ContentView.swift in Sources */,
 				FA3261902B8F173900C1E5B2 /* Item.swift in Sources */,
 				FA32618C2B8F173900C1E5B2 /* LiveArtApp.swift in Sources */,
+				2B120CFA2B91365F004CC4E6 /* ActivityView.swift in Sources */,
 				FA32619E2B8F248E00C1E5B2 /* LivePhoto.swift in Sources */,
+				2B120CF42B9135E5004CC4E6 /* ProjectView.swift in Sources */,
+				2B120CF82B91364F004CC4E6 /* LivePhotoView.swift in Sources */,
+				2B120CF62B91360C004CC4E6 /* ResultView.swift in Sources */,
+				2B120CFC2B913672004CC4E6 /* GuideView.swift in Sources */,
 				FA32619C2B8F246500C1E5B2 /* Utils.swift in Sources */,
 				FA3261A02B8F24B900C1E5B2 /* Project.swift in Sources */,
 			);
