@@ -22,12 +22,10 @@ struct NewProjectTip: Tip {
 
 struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
-    @Query private var items: [Item]
     @Query private var projects: [Project]
     
     
 
-    @StateObject private var viewModel = ViewModel()
     @State private var shouldPlay = false
     @State private var isShowingShareSheet = false
     @State private var showingActionSheet = false
@@ -162,8 +160,33 @@ struct ContentView: View {
     }
 }
 
+struct SampleProject {
+    static var contents: [Project] = [
+        Project(name: "sos", type: .LiveAlbum),
+        Project(name: "speak_now", type: .LiveAlbum),
+    ]
+}
+
+
+@MainActor
+let previewContainer: ModelContainer = {
+    do {
+        let container = try ModelContainer(
+            for: Project.self,
+            configurations: ModelConfiguration(isStoredInMemoryOnly: true)
+        )
+        let modelContext = container.mainContext
+        if try modelContext.fetch(FetchDescriptor<Project>()).isEmpty {
+            SampleProject.contents.forEach { container.mainContext.insert($0) }
+        }
+        return container
+    } catch {
+        fatalError("Failed to create container")
+    }
+}()
+
+
 #Preview {
     ContentView()
-        .modelContainer(for: Item.self, inMemory: true)
-        .modelContainer(for: Project.self, inMemory: true)
+        .modelContainer(previewContainer)
 }
