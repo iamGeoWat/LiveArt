@@ -12,9 +12,9 @@ import UniformTypeIdentifiers
 import SwiftUI
 
 // This function adds metadata to a video asset
-func transcodeLive(_ liveType: String, for rawVideoFileURL: URL, progress progressValue: Binding<Double>, progressLabel: Binding<String>, videoCompletion: @escaping (Result<[URL], Error>) -> Void) {
+func transcodeLive(_ liveType: String, for rawVideoFileURL: URL, setProgress: @escaping (Double?, String?) -> Void, videoCompletion: @escaping (Result<[URL], Error>) -> Void) {
     print("start transcoding")
-    progressLabel.wrappedValue = "Loading resources and assets..."
+    setProgress(0, "Loading resources and assets...")
     // Generate a unique identifier for the asset
     let assetIdentifier = UUID().uuidString
     let rawVideoFileName = rawVideoFileURL.deletingPathExtension().lastPathComponent
@@ -45,8 +45,7 @@ func transcodeLive(_ liveType: String, for rawVideoFileURL: URL, progress progre
     guard let compositionTrack = mixComposition.addMutableTrack(withMediaType: .video, preferredTrackID: Int32(kCMPersistentTrackID_Invalid)) else {
         return
     }
-    
-    progressLabel.wrappedValue = "Adding video and metadata tracks..."
+    setProgress(0, "Adding video and metadata tracks...")
     // Add the video track to the composition
     do {
         let sourceDuration = assetRaw.duration
@@ -146,8 +145,7 @@ func transcodeLive(_ liveType: String, for rawVideoFileURL: URL, progress progre
         metadataItem.keySpace = AVMetadataKeySpace.common
         metadataItem.value = ISO8601DateFormatter().string(from: Date()) as (NSCopying & NSObjectProtocol)?
         metadataItem.locale = Locale.current
-        
-        progressLabel.wrappedValue = "Exporting video for Live \(liveType), it may take a while..."
+        setProgress(0, "Exporting video for Live \(liveType), it may take a while...")
         // Set up and start the video export process
         guard let exporter = AVAssetExportSession(asset: mixComposition, presetName: AVAssetExportPresetHEVCHighestQualityWithAlpha) else {
             videoCompletion(.failure(ExportError.exportSessionFailed))
@@ -168,9 +166,9 @@ func transcodeLive(_ liveType: String, for rawVideoFileURL: URL, progress progre
         Timer.scheduledTimer(withTimeInterval: 0.5, repeats: true) { timer in
             withAnimation {
                 if liveType == "Wallpaper" {
-                    progressValue.wrappedValue = Double(exporter.progress * 50.0) + 50
+                    setProgress(Double(exporter.progress * 50.0) + 50, nil)
                 } else if liveType == "Photo" {
-                    progressValue.wrappedValue = Double(exporter.progress * 50.0)
+                    setProgress(Double(exporter.progress * 50.0), nil)
                 }
             }
             if exporter.status == .completed || exporter.status == .failed {
@@ -181,7 +179,7 @@ func transcodeLive(_ liveType: String, for rawVideoFileURL: URL, progress progre
             switch exporter.status {
             case .completed:
                 print("Video transcoding compelted")
-                progressLabel.wrappedValue = "Exporting photo for Live \(liveType), it may take a while..."
+                setProgress(nil, "Exporting photo for Live \(liveType), it may take a while...")
                 extractFramesAndSaveHEIC(videoURL: outputURL) { result in
                     switch result {
                     case .success(let photoURL):

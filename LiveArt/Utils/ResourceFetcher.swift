@@ -142,13 +142,11 @@ func downloadVideo(from urlString: String, completion: @escaping (URL?) -> Void)
     downloadTask.resume()
 }
 
-func fetchAlbumArtVideo(from sourceURL: String, progress: Binding<Double>, progressLabel: Binding<String>, completion: @escaping (URL?) -> Void) {
+func fetchAlbumArtVideo(from sourceURL: String, setProgress: @escaping (Double?, String?) -> Void, completion: @escaping (URL?) -> Void) {
     let url = URL(string: sourceURL)!
-    progress.wrappedValue = 10
-    progressLabel.wrappedValue = "Downloading HTML..."
+    setProgress(10, "Downloading HTML...")
     downloadHTML(url: url) { content in
-        progress.wrappedValue = 30
-        progressLabel.wrappedValue = "Parsing HTML..."
+        setProgress(30, "Parsing HTML...")
         guard let html = content else {
             print("error")
             completion(nil)
@@ -164,8 +162,7 @@ func fetchAlbumArtVideo(from sourceURL: String, progress: Binding<Double>, progr
             completion(nil)
             return
         }
-        progress.wrappedValue = 40
-        progressLabel.wrappedValue = "Downloading M3U8 File..."
+        setProgress(40, "Downloading M3U8 File...")
         downloadFile(from: videoSrc) { fileURL in
             guard let fileURL = fileURL else {
                 print("error3")
@@ -177,8 +174,7 @@ func fetchAlbumArtVideo(from sourceURL: String, progress: Binding<Double>, progr
                 completion(nil)
                 return
             }
-            progress.wrappedValue = 60
-            progressLabel.wrappedValue = "Downloading 2nd M3U8 File..."
+            setProgress(60, "Downloading 2nd M3U8 File...")
             downloadFile(from: videoRawLink) { rawFileURL in
                 guard let rawFileURL = rawFileURL else {
                     print("error5")
@@ -195,8 +191,7 @@ func fetchAlbumArtVideo(from sourceURL: String, progress: Binding<Double>, progr
                     completion(nil)
                     return
                 }
-                progress.wrappedValue = 80
-                progressLabel.wrappedValue = "Downloading Album Art Video..."
+                setProgress(80, "Downloading Album Art Video...")
                 downloadVideo(from: videoURL) { videoFileURL in
                     completion(videoFileURL)
                 }

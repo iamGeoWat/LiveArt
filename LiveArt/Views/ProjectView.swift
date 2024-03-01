@@ -17,15 +17,11 @@ struct ProjectView: View {
     
     @State private var albumURL: String = "https://music.apple.com/us/playlist/me-and-bae/pl.a13aca4f4f2c45538472de9014057cc0"
     @State private var timer: Timer?
-    @State private var shouldPlayLPPreview = false
-    @State private var shouldPlayLWPreview = false
     @State private var isShowingShareSheet = false
-    @State private var isShowingLPSaved = false
-    @State private var isShowingLWSaved = false
     @State private var isShowingInvokeFailed = false
+    
     @State private var generateProgress = 0.0
     @State private var generateProgressLabel = "Ready"
-
     @State private var fetchProgress = 0.0
     @State private var fetchProgressLabel = "Ready"
 
@@ -62,8 +58,6 @@ struct ProjectView: View {
                             Text("Provide a link to an Apple Music album")
                                 .font(.headline)
                                 .padding(.bottom, 5)
-                            Text("Open a playlist or album in Apple Music → Top-right menu → Share → Copy")
-                                .padding(.bottom, 10)
                             HStack {
                                 TextField("Enter URL", text: $albumURL)
                                     .textFieldStyle(RoundedBorderTextFieldStyle()) // Gives the text field a rounded border
@@ -104,7 +98,6 @@ struct ProjectView: View {
                             Text("Generate Live Photo")
                                 .font(.headline)
                                 .padding(.bottom, 5)
-                            Text("We'll employ AVFoundation and ImageIO APIs to convert the downloaded MP4 file into a Live Photo and Live Wallpaper that meets specifications.")
                             HStack {
                                 Button("Generate") {
                                     withAnimation {
@@ -113,7 +106,7 @@ struct ProjectView: View {
                                     generateLivePhoto() {
                                         generateLiveWallpaper() {
                                             print("goto step 3")
-                                            goToStep(3, with: proxy)
+                                            goToStep(6, with: proxy)
                                         }
                                     }
                                 }
@@ -136,171 +129,33 @@ struct ProjectView: View {
                         .opacity(project.currentStep != 2 ? 0.5: 1.0)
                         .disabled(project.currentStep != 2)
                     }
-                    // Step 3
-                    HStack(alignment: .top) {
-                        VStack(spacing: 2) {
-                            Image(systemName: "circle.fill")
-                                .imageScale(.medium)
-                                .font(.footnote)
-                            Rectangle()
-                                .frame(width: 2)
-                                .clipped()
+                    // Finished
+                    Group {
+                        HStack(alignment: .top) {
+                            VStack(spacing: 2) {
+                                Image(systemName: "circle.fill")
+                                    .imageScale(.medium)
+                                    .font(.footnote)
+                            }
+                            .foregroundColor(colorForStep(6, when: project.currentStep))
+                            VStack(alignment: .leading, spacing: 4) {
+                                Text("Finished")
+                                    .font(.footnote)
+                                HStack {
+                                    Spacer()
+                                }
+                            }
+                            .frame(maxWidth: .infinity)
+                            .cornerRadius(10)
+                            .padding(.bottom, 30)
                         }
-                        .foregroundColor(colorForStep(3, when: project.currentStep))
+                        .id(stepIds[6])
+                        // Project Result
+                        Text("View your result")
+                            .font(.largeTitle)
+                            .fontDesign(.monospaced)
+                            .padding(.bottom, 30)
                         VStack(alignment: .leading, spacing: 4) {
-                            Text("Step 3:")
-                                .font(.footnote)
-                            Text("Preview and Save Live Photo")
-                                .font(.headline)
-                                .padding(.bottom, 5)
-                            Text("This is a Live Photo plays at the normal speed. You can skip it if you only want the animated wallpaper.")
-                                .padding(.bottom, 10)
-                            if let lp = project.livePhoto?.livePhoto {
-                                LivePhotoViewRep(livePhoto: lp, shouldPlay: $shouldPlayLPPreview, repetitivePlay: false)
-                                    .aspectRatio(contentMode: .fit)
-                                    .frame(minWidth: 0, maxWidth: 220, maxHeight: 220)
-                                    .clipped()
-                                    .cornerRadius(20)
-                                    .padding(.bottom, 10)
-                            } else {
-                                Rectangle()
-                                    .scaledToFill()
-                                    .aspectRatio(contentMode: .fill)
-                                    .frame(minWidth: 0, maxWidth: 220)
-                                    .clipped()
-                                    .cornerRadius(20)
-                                    .padding(.bottom, 10)
-                                    .overlay(
-                                        Image(systemName: "photo.fill") // Use an SF Symbol
-                                            .font(.largeTitle) // Set the symbol's size
-                                            .foregroundColor(.white), // Set the symbol's color
-                                        alignment: .center // Ensure the symbol is centered within the rectangle
-                                    )
-                            }
-                            HStack {
-                                Button("Play") {
-                                    shouldPlayLPPreview.toggle()
-                                    print("playing")
-                                }
-                                .buttonStyle(BorderedButtonStyle())
-                                Button("Save") {
-                                    guard let lp = project.livePhoto else {
-                                        print("live photo not in project")
-                                        return
-                                    }
-                                    saveLivePhotoToLibrary(pairedImage: lp.pairedImage, pairedVideo: lp.pairedVideo) 
-                                    print("saving")
-                                    isShowingLPSaved = true
-                                }
-                                .buttonStyle(BorderedProminentButtonStyle())
-                                .alert("Live Photo Saved", isPresented: $isShowingLPSaved) {
-                                    Button("OK", role: .cancel) {
-                                        goToStep(4, with: proxy)
-                                    }
-                                }
-                                Button("Skip") {
-                                    goToStep(4, with: proxy)
-                                }
-                                .buttonStyle(BorderedProminentButtonStyle())
-                                Spacer()
-                            }
-                            paddedAnchor(forStep: 4)
-                        }
-                        .frame(maxWidth: .infinity)
-                        .cornerRadius(10)
-                        .opacity(project.currentStep != 3 ? 0.5: 1.0)
-                        .disabled(project.currentStep != 3)
-                    }
-                    // Step 4
-                    HStack(alignment: .top) {
-                        VStack(spacing: 2) {
-                            Image(systemName: "circle.fill")
-                                .imageScale(.medium)
-                                .font(.footnote)
-                            Rectangle()
-                                .frame(width: 2)
-                                .clipped()
-                        }
-                        .foregroundColor(colorForStep(4, when: project.currentStep))
-                        VStack(alignment: .leading, spacing: 4) {
-                            Text("Step 4:")
-                                .font(.footnote)
-                            Text("Preview and Save Live Wallpaper")
-                                .font(.headline)
-                                .padding(.bottom, 5)
-                            Text("This Live Photo has been sped up and had its metadata multiplexed to meet Live Wallpaper standards, making it likely to be accepted by iOS as a Live Wallpaper.")
-                                .padding(.bottom, 10)
-                            if let lp = project.liveWallpaper?.livePhoto {
-                                LivePhotoViewRep(livePhoto: lp, shouldPlay: $shouldPlayLWPreview, repetitivePlay: false)
-                                    .aspectRatio(9/16, contentMode: .fit)
-                                    .frame(minWidth: 0, maxWidth: 220)
-                                    .clipped()
-                                    .cornerRadius(20)
-                                    .padding(.bottom, 10)
-                            } else {
-                                Rectangle()
-                                    .scaledToFill()
-                                    .aspectRatio(9/16, contentMode: .fill)
-                                    .frame(minWidth: 0, maxWidth: 220)
-                                    .clipped()
-                                    .cornerRadius(20)
-                                    .padding(.bottom, 10)
-                                    .overlay(
-                                        Image(systemName: "photo.fill") // Use an SF Symbol
-                                            .font(.largeTitle) // Set the symbol's size
-                                            .foregroundColor(.white), // Set the symbol's color
-                                        alignment: .center // Ensure the symbol is centered within the rectangle
-                                    )
-                            }
-                            HStack {
-                                Button("Play") {
-                                    shouldPlayLWPreview.toggle()
-                                    print("playing")
-                                }
-                                .buttonStyle(BorderedButtonStyle())
-                                Button("Save") {
-                                    guard let liveWallpaper = project.liveWallpaper else {
-                                        print("Live wallpaper not in project")
-                                        return
-                                    }
-                                    saveLivePhotoToLibrary(pairedImage: liveWallpaper.pairedImage, pairedVideo: liveWallpaper.pairedVideo)
-                                    isShowingLWSaved = true
-                                    print("saving")
-                                }
-                                .buttonStyle(BorderedProminentButtonStyle())
-                                .alert("Live Wallpaper Saved", isPresented: $isShowingLWSaved) {
-                                    Button("OK", role: .cancel) {
-                                        goToStep(5, with: proxy)
-                                    }
-                                }
-                                Button("Skip") {
-                                    goToStep(5, with: proxy)
-                                    print("go next")
-                                }
-                                .buttonStyle(BorderedProminentButtonStyle())
-                                Spacer()
-                            }
-                            paddedAnchor(forStep: 5)
-                        }
-                        .frame(maxWidth: .infinity)
-                        .cornerRadius(10)
-                        .opacity(project.currentStep != 4 ? 0.5: 1.0)
-                        .disabled(project.currentStep != 4)
-                    }
-                    // Step 5
-                    HStack(alignment: .top) {
-                        VStack(spacing: 2) {
-                            Image(systemName: "circle.fill")
-                                .imageScale(.medium)
-                                .font(.footnote)
-                            Rectangle()
-                                .frame(width: 2)
-                                .clipped()
-                        }
-                        .foregroundColor(colorForStep(5, when: project.currentStep))
-                        VStack(alignment: .leading, spacing: 4) {
-                            Text("Step 5:")
-                                .font(.footnote)
                             Text("Set Live Wallpaper")
                                 .font(.headline)
                                 .padding(.bottom, 5)
@@ -340,34 +195,7 @@ struct ProjectView: View {
                         .frame(maxWidth: .infinity)
                         .cornerRadius(10)
                         .opacity(project.currentStep != 5 ? 0.5: 1.0)
-                        .disabled(project.currentStep != 5)
-                    }
-                    // Finished
-                    Group {
-                        HStack(alignment: .top) {
-                            VStack(spacing: 2) {
-                                Image(systemName: "circle.fill")
-                                    .imageScale(.medium)
-                                    .font(.footnote)
-                            }
-                            .foregroundColor(colorForStep(6, when: project.currentStep))
-                            VStack(alignment: .leading, spacing: 4) {
-                                Text("Finished")
-                                    .font(.footnote)
-                                HStack {
-                                    Spacer()
-                                }
-                            }
-                            .frame(maxWidth: .infinity)
-                            .cornerRadius(10)
-                            .padding(.bottom, 30)
-                        }
-                        .id(stepIds[6])
-                        // Project Result
-                        Text("View your result")
-                            .font(.largeTitle)
-                            .fontDesign(.monospaced)
-                            .padding(.bottom, 30)
+                        .disabled(project.currentStep != 6)
                         VStack {
                             VStack {
                                 ResultView(project: project)
@@ -395,18 +223,19 @@ struct ProjectView: View {
     }
     
     func generateLivePhoto(completion: @escaping () -> Void) {
+        let setProgress = setProgressAnimated(progress: $generateProgress, label: $generateProgressLabel)
         guard let rawVideoFileURL = project.rawVideoFileURL else {
             print("no video file")
             completion()
             return
         }
-        transcodeLive("Photo", for: rawVideoFileURL, progress: $generateProgress, progressLabel: $generateProgressLabel) { result in
+        transcodeLive("Photo", for: rawVideoFileURL, setProgress: setProgress) { result in
             switch result {
             case .success(let urls):
                 let videoURL = urls[0]
                 let photoURL = urls[1]
                 print("gen succeeded")
-                generateProgressLabel = "Generating Live Photo..."
+                setProgress(nil, "Generating Live Photo...")
                 PHLivePhoto.request(withResourceFileURLs: [photoURL, videoURL], placeholderImage: nil, targetSize: CGSize.zero, contentMode: PHImageContentMode.aspectFit, resultHandler: { (livePhoto: PHLivePhoto?, info: [AnyHashable : Any]) -> Void in
                     if let isDegraded = info[PHLivePhotoInfoIsDegradedKey] as? Bool, isDegraded {
                         return
@@ -416,8 +245,7 @@ struct ProjectView: View {
                     }
                     withAnimation {
                         project.livePhoto = LivePhoto(pairedImage: photoURL, pairedVideo: videoURL, livePhoto: livePhoto)
-                        generateProgressLabel = "Live Photo generated..."
-                        generateProgress = 50
+                        setProgress(50, "Live Photo generated!")
                         completion()
                     }
                 })
@@ -428,18 +256,18 @@ struct ProjectView: View {
     }
     
     func generateLiveWallpaper(completion: @escaping () -> Void) {
+        let setProgress = setProgressAnimated(progress: $generateProgress, label: $generateProgressLabel)
         guard let rawVideoFileURL = project.rawVideoFileURL else {
             print("no video file")
             completion()
             return
         }
-        transcodeLive("Wallpaper", for: rawVideoFileURL, progress: $generateProgress, progressLabel: $generateProgressLabel) { result in
+        transcodeLive("Wallpaper", for: rawVideoFileURL, setProgress: setProgress) { result in
             switch result {
             case .success(let urls):
                 let videoURL = urls[0]
                 let photoURL = urls[1]
-                print("gen succeeded")
-                generateProgressLabel = "Generating Live Wallpaper..."
+                setProgress(nil, "Generating Live Wallpaper...")
                 PHLivePhoto.request(withResourceFileURLs: [photoURL, videoURL], placeholderImage: nil, targetSize: CGSize.zero, contentMode: PHImageContentMode.aspectFit, resultHandler: { (livePhoto: PHLivePhoto?, info: [AnyHashable : Any]) -> Void in
                     if let isDegraded = info[PHLivePhotoInfoIsDegradedKey] as? Bool, isDegraded {
                         return
@@ -449,10 +277,9 @@ struct ProjectView: View {
                     }
                     withAnimation {
                         project.liveWallpaper = LivePhoto(pairedImage: photoURL, pairedVideo: videoURL, livePhoto: livePhoto)
-                        generateProgressLabel = "Live Wallpaper generated. Done."
-                        generateProgress = 100
-                        completion()
                     }
+                    setProgress(100, "Live Wallpaper generated. Done.")
+                    completion()
                 })
             default:
                 print("gen lp failed")
@@ -487,13 +314,11 @@ struct ProjectView: View {
     
     // Function to handle text change
     func fetchAlbum(scrollViewProxy: ScrollViewProxy) {
-        fetchAlbumArtVideo(from: albumURL, progress: $fetchProgress, progressLabel: $fetchProgressLabel) { fileURL in
+        let setProgress = setProgressAnimated(progress: $fetchProgress, label: $fetchProgressLabel)
+        fetchAlbumArtVideo(from: albumURL, setProgress: setProgress) { fileURL in
             project.rawVideoFileURL = fileURL
-            withAnimation {
-                fetchProgress = 100
-                fetchProgressLabel = "Album Art Downloaded."
-                goToStep(2, with: scrollViewProxy)
-            }
+            setProgress(100, "Album Art Downloaded.")
+            goToStep(2, with: scrollViewProxy)
         }
     }
 }

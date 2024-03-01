@@ -46,7 +46,7 @@ struct LivePhotoViewRep: UIViewRepresentable {
             }
 
             func livePhotoView(_ livePhotoView: PHLivePhotoView, didEndPlaybackWith playbackStyle: PHLivePhotoViewPlaybackStyle) {
-                guard parent.repetitivePlay ?? false else { return }
+                guard parent.repetitivePlay else { return }
                 livePhotoView.startPlayback(with: .full) // Restart playback
             }
         }

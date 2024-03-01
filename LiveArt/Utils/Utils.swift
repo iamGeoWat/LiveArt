@@ -7,6 +7,7 @@
 
 import Foundation
 import Photos
+import SwiftUI
 
 var todayDate: String {
     let today = Date()
@@ -39,4 +40,15 @@ func saveLivePhotoToLibrary(pairedImage image: URL, pairedVideo video: URL) {
     })
 }
 
-
+func setProgressAnimated(progress value: Binding<Double>, label: Binding<String>) -> (Double?, String?) -> Void {
+    return { newValue, newLabel in
+        withAnimation {
+            if let newValue = newValue {
+                value.wrappedValue = newValue
+            }
+            if let newLabel = newLabel {
+                label.wrappedValue = newLabel
+            }
+        }
+    }
+}
