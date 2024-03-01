@@ -6,28 +6,7 @@
 //
 
 import Foundation
-// todo: use SwiftSoup as the HTML parser
-
-func fetchWebPage(url: URL, completion: @escaping (String?) -> Void) {
-    let task = URLSession.shared.dataTask(with: url) { data, response, error in
-        guard let data = data, error == nil else {
-            print("Error fetching data: \(error?.localizedDescription ?? "Unknown error")")
-            completion(nil)
-            return
-        }
-        let content = String(data: data, encoding: .utf8)
-        completion(content)
-    }
-    task.resume()
-}
-
-func findAmpAmbientVideoSrc(html: String) -> String? {
-    let pattern = "<amp-ambient-video[^>]+src=\"([^\"]+)\""
-    if let range = html.range(of: pattern, options: .regularExpression) {
-        return String(html[range])
-    }
-    return nil
-}
+import SwiftSoup
 
 func downloadFile(from urlString: String, completion: @escaping (URL?) -> Void) {
     guard let url = URL(string: urlString) else {
@@ -47,25 +26,173 @@ func downloadFile(from urlString: String, completion: @escaping (URL?) -> Void) 
     task.resume()
 }
 
+func downloadHTML(url: URL, completion: @escaping (String?) -> Void) {
+    let task = URLSession.shared.dataTask(with: url) { data, response, error in
+        guard let data = data, error == nil else {
+            print("Error fetching data: \(error?.localizedDescription ?? "Unknown error")")
+            completion(nil)
+            return
+        }
+        let content = String(data: data, encoding: .utf8)
+        completion(content)
+    }
+    task.resume()
+}
 
-func main() {
-    let url = URL(string: "https://music.apple.com/us/library/albums/l.M70OFE7?l=en-US")!
-    print("jio")
-    fetchWebPage(url: url) { content in
-        guard let html = content, let videoSrc = findAmpAmbientVideoSrc(html: html) else {
-            print("Failed to find video src")
+func parseHTML(html: String) -> Document? {
+    do {
+        let doc: Document = try SwiftSoup.parse(html)
+        print(try doc.text())
+        return doc
+    } catch {
+        print("error")
+        return nil
+    }
+}
+
+func getVideoSrc(doc: Document) -> String? {
+    do {
+        let videoElement: Element = try doc.select("amp-ambient-video").first()!
+        let videoSrc = try videoElement.attr("src")
+        print(videoSrc)
+
+        return videoSrc
+    } catch {
+        print("parser error")
+        return nil
+    }
+}
+
+func findLink(in fileURL: URL) -> String? {
+    guard let fileContent = try? String(contentsOf: fileURL, encoding: .utf8) else {
+        print("Failed to load the file content.")
+        return nil
+    }
+    let lines = fileContent.components(separatedBy: .newlines)
+    for line in lines.reversed() {
+        if line.hasPrefix("https") {
+            return line
+        }
+    }
+    return nil
+}
+
+func findFileName(in fileURL: URL) -> String? {
+    guard let fileContent = try? String(contentsOf: fileURL, encoding: .utf8) else {
+        print("Failed to load the file content.")
+        return nil
+    }
+    let lines = fileContent.components(separatedBy: .newlines)
+    for line in lines.reversed() {
+        if line.hasSuffix("mp4") {
+            return line
+        }
+    }
+    return nil
+}
+
+func getFinalVideoURL(url: String, fileName: String) -> String? {
+    if var urlComponents = URLComponents(string: url),
+       let url = urlComponents.url,
+       var pathComponents = URL(string: url.absoluteString)?.pathComponents {
+        pathComponents.removeLast()
+        let newPath = (pathComponents + [fileName]).joined(separator: "/")
+        urlComponents.path = newPath
+        
+        if let newURL = urlComponents.url {
+            print("New URL: \(newURL)")
+            return newURL.absoluteString
+        } else {
+            print("Failed to construct new URL")
+            return nil
+        }
+    } else {
+        print("Invalid URL")
+        return nil
+    }
+}
+
+func downloadVideo(from urlString: String, completion: @escaping (URL?) -> Void) {
+    guard let url = URL(string: urlString) else {
+        completion(nil)
+        return
+    }
+    
+    let downloadTask = URLSession.shared.downloadTask(with: url) { tempLocalUrl, response, error in
+        guard let tempLocalUrl = tempLocalUrl, error == nil else {
+            completion(nil)
+            return
+        }
+        
+        do {
+            let documentsDirectory = try FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
+            let savedURL = documentsDirectory.appendingPathComponent(url.lastPathComponent)
+            
+            // If file with the same name exists, remove it (overwrite)
+            if FileManager.default.fileExists(atPath: savedURL.path) {
+                try FileManager.default.removeItem(at: savedURL)
+            }
+            
+            // Move the downloaded file to your directory
+            try FileManager.default.moveItem(at: tempLocalUrl, to: savedURL)
+            completion(savedURL)
+        } catch {
+            completion(nil)
+        }
+    }
+    
+    downloadTask.resume()
+}
+
+func fetchAlbumArtVideo(from sourceURL: String, completion: @escaping (URL?) -> Void) {
+    let url = URL(string: sourceURL)!
+    downloadHTML(url: url) { content in
+        guard let html = content else {
+            print("error")
+            completion(nil)
+            return
+        }
+        guard let doc = parseHTML(html: html) else {
+            print("error1")
+            completion(nil)
+            return
+        }
+        guard let videoSrc = getVideoSrc(doc: doc) else {
+            print("error2")
+            completion(nil)
             return
         }
         downloadFile(from: videoSrc) { fileURL in
             guard let fileURL = fileURL else {
-                print("Failed to download file")
+                print("error3")
+                completion(nil)
                 return
             }
-            print("File downloaded to: \(fileURL.path)")
+            guard let videoRawLink = findLink(in: fileURL) else {
+                print("error4")
+                completion(nil)
+                return
+            }
+            downloadFile(from: videoRawLink) { rawFileURL in
+                guard let rawFileURL = rawFileURL else {
+                    print("error5")
+                    completion(nil)
+                    return
+                }
+                guard let fileName = findFileName(in: rawFileURL) else {
+                    print("error4")
+                    completion(nil)
+                    return
+                }
+                guard let videoURL = getFinalVideoURL(url: videoRawLink, fileName: fileName) else {
+                    print("error5")
+                    completion(nil)
+                    return
+                }
+                downloadVideo(from: videoURL) { videoFileURL in
+                    completion(videoFileURL)
+                }
+            }
         }
     }
 }
-//
-//main()
-//
-//CFRunLoopRun()
