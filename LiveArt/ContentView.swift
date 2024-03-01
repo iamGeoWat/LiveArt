@@ -160,32 +160,6 @@ struct ContentView: View {
     }
 }
 
-struct SampleProject {
-    static var contents: [Project] = [
-        Project(name: "sos", type: .LiveAlbum),
-        Project(name: "speak_now", type: .LiveAlbum),
-    ]
-}
-
-
-@MainActor
-let previewContainer: ModelContainer = {
-    do {
-        let container = try ModelContainer(
-            for: Project.self,
-            configurations: ModelConfiguration(isStoredInMemoryOnly: true)
-        )
-        let modelContext = container.mainContext
-        if try modelContext.fetch(FetchDescriptor<Project>()).isEmpty {
-            SampleProject.contents.forEach { container.mainContext.insert($0) }
-        }
-        return container
-    } catch {
-        fatalError("Failed to create container")
-    }
-}()
-
-
 #Preview {
     ContentView()
         .modelContainer(previewContainer)

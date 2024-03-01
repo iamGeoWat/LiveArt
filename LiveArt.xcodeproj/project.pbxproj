@@ -19,6 +19,7 @@
 		2B120D052B91412F004CC4E6 /* Shortcut.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B120D042B91412F004CC4E6 /* Shortcut.swift */; };
 		FA1142662B91CBB600824BEC /* workingLivePhoto.MOV in Resources */ = {isa = PBXBuildFile; fileRef = FA1142652B91CBB600824BEC /* workingLivePhoto.MOV */; };
 		FA1142682B91CBFE00824BEC /* Set LivePhoto Wallpaper.shortcut in Resources */ = {isa = PBXBuildFile; fileRef = FA1142672B91CBFE00824BEC /* Set LivePhoto Wallpaper.shortcut */; };
+		FA11426B2B91D03C00824BEC /* PreviewSupport.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA11426A2B91D03C00824BEC /* PreviewSupport.swift */; };
 		FA32618C2B8F173900C1E5B2 /* LiveArtApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA32618B2B8F173900C1E5B2 /* LiveArtApp.swift */; };
 		FA32618E2B8F173900C1E5B2 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA32618D2B8F173900C1E5B2 /* ContentView.swift */; };
 		FA3261902B8F173900C1E5B2 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA32618F2B8F173900C1E5B2 /* Item.swift */; };
@@ -44,6 +45,7 @@
 		FA1142652B91CBB600824BEC /* workingLivePhoto.MOV */ = {isa = PBXFileReference; lastKnownFileType = video.quicktime; path = workingLivePhoto.MOV; sourceTree = "<group>"; };
 		FA1142672B91CBFE00824BEC /* Set LivePhoto Wallpaper.shortcut */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Set LivePhoto Wallpaper.shortcut"; sourceTree = "<group>"; };
 		FA1142692B91CDC600824BEC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		FA11426A2B91D03C00824BEC /* PreviewSupport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewSupport.swift; sourceTree = "<group>"; };
 		FA3261882B8F173900C1E5B2 /* LiveArt.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LiveArt.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FA32618B2B8F173900C1E5B2 /* LiveArtApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveArtApp.swift; sourceTree = "<group>"; };
 		FA32618D2B8F173900C1E5B2 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -126,6 +128,7 @@
 			isa = PBXGroup;
 			children = (
 				FA3261942B8F173A00C1E5B2 /* Preview Assets.xcassets */,
+				FA11426A2B91D03C00824BEC /* PreviewSupport.swift */,
 			);
 			path = "Preview Content";
 			sourceTree = "<group>";
@@ -244,6 +247,7 @@
 				FA32619C2B8F246500C1E5B2 /* Utils.swift in Sources */,
 				2B120D022B913731004CC4E6 /* ViewModels.swift in Sources */,
 				FA3261A02B8F24B900C1E5B2 /* Project.swift in Sources */,
+				FA11426B2B91D03C00824BEC /* PreviewSupport.swift in Sources */,
 				2B120D052B91412F004CC4E6 /* Shortcut.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -504,15 +504,10 @@ struct ProjectViewPreview: View {
     @Environment(\.modelContext) private var modelContext
     @Query private var projects: [Project]
     
-    static func printDocumentDirectoryPath() {
-        if let path = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first {
-            print("Document Directory Path: \(path)")
-        }
-    }
     var body: some View {
         ProjectView(project: projects.first!)
             .onAppear {
-                ProjectViewPreview.printDocumentDirectoryPath()
+                printDocumentDirectoryPath()
             }
     }
 }
