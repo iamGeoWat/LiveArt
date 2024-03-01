@@ -12,11 +12,12 @@ import UniformTypeIdentifiers
 import SwiftUI
 
 // This function adds metadata to a video asset
-func transcodeLive(_ liveType: String, for inputFileName: String, progress progressValue: Binding<Double>, progressLabel: Binding<String>, videoCompletion: @escaping (Result<[URL], Error>) -> Void) {
+func transcodeLive(_ liveType: String, for rawVideoFileURL: URL, progress progressValue: Binding<Double>, progressLabel: Binding<String>, videoCompletion: @escaping (Result<[URL], Error>) -> Void) {
     print("start transcoding")
     progressLabel.wrappedValue = "Loading resources and assets..."
     // Generate a unique identifier for the asset
     let assetIdentifier = UUID().uuidString
+    let rawVideoFileName = rawVideoFileURL.deletingPathExtension().lastPathComponent
     
     // Define constants related to the metadata that will be added
     let kKeySpaceQuickTimeMetadata = "mdta"
@@ -27,16 +28,17 @@ func transcodeLive(_ liveType: String, for inputFileName: String, progress progr
         print("working lp not found")
         return
     }
-    guard let inputMovieBundlePath = Bundle.main.path(forResource: "\(inputFileName)_raw", ofType: "mp4") else {
-        print("input movie not found")
-        return
-    }
+//    guard let inputMovieBundlePath = Bundle.main.path(forResource: "\(inputFileName)_raw", ofType: "mp4") else {
+//        print("input movie not found")
+//        return
+//    }
     guard let workingLivePhotoBundlePath = Bundle.main.path(forResource: "workingLivePhoto", ofType: "MOV") else {
         print("working lp not found")
         return
     }
     let workingLivePhotoURL = URL(fileURLWithPath: workingLivePhotoBundlePath)
-    let inputURLRaw = URL(fileURLWithPath: inputMovieBundlePath)
+//    let inputURLRaw = URL(fileURLWithPath: inputMovieBundlePath)
+    let inputURLRaw = rawVideoFileURL
     let assetRaw = AVURLAsset(url: inputURLRaw)
     
     let mixComposition = AVMutableComposition()
@@ -155,7 +157,7 @@ func transcodeLive(_ liveType: String, for inputFileName: String, progress progr
             videoCompletion(.failure(ExportError.couldNotFindDocumentDirectory))
             return
         }
-        let outputURL = documentDirectoryURL.appendingPathComponent("\(inputFileName)_Live\(liveType)_video.MOV")
+        let outputURL = documentDirectoryURL.appendingPathComponent("\(rawVideoFileName)_Live\(liveType)_video.MOV")
         // Remove existing file at output URL if any
         try? FileManager.default.removeItem(at: outputURL)
         exporter.outputURL = outputURL
@@ -255,7 +257,7 @@ func transcodeLive(_ liveType: String, for inputFileName: String, progress progr
                 videoCompletion(.failure(ExportError.couldNotFindDocumentDirectory))
                 return
             }
-            let url = documentDirectoryURL.appendingPathComponent("\(inputFileName)_Live\(liveType)_photo.HEIC")
+            let url = documentDirectoryURL.appendingPathComponent("\(rawVideoFileName)_Live\(liveType)_photo.HEIC")
             guard let destination = CGImageDestinationCreateWithURL(url as CFURL, AVFileType.heic.rawValue as CFString, images.count, nil) else {
                 print("Failed to create image destination.")
                 return

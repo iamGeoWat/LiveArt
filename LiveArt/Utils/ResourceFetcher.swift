@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftSoup
+import SwiftUI
 
 func downloadFile(from urlString: String, completion: @escaping (URL?) -> Void) {
     guard let url = URL(string: urlString) else {
@@ -42,7 +43,6 @@ func downloadHTML(url: URL, completion: @escaping (String?) -> Void) {
 func parseHTML(html: String) -> Document? {
     do {
         let doc: Document = try SwiftSoup.parse(html)
-        print(try doc.text())
         return doc
     } catch {
         print("error")
@@ -128,12 +128,10 @@ func downloadVideo(from urlString: String, completion: @escaping (URL?) -> Void)
             let documentsDirectory = try FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
             let savedURL = documentsDirectory.appendingPathComponent(url.lastPathComponent)
             
-            // If file with the same name exists, remove it (overwrite)
             if FileManager.default.fileExists(atPath: savedURL.path) {
                 try FileManager.default.removeItem(at: savedURL)
             }
             
-            // Move the downloaded file to your directory
             try FileManager.default.moveItem(at: tempLocalUrl, to: savedURL)
             completion(savedURL)
         } catch {
@@ -144,9 +142,13 @@ func downloadVideo(from urlString: String, completion: @escaping (URL?) -> Void)
     downloadTask.resume()
 }
 
-func fetchAlbumArtVideo(from sourceURL: String, completion: @escaping (URL?) -> Void) {
+func fetchAlbumArtVideo(from sourceURL: String, progress: Binding<Double>, progressLabel: Binding<String>, completion: @escaping (URL?) -> Void) {
     let url = URL(string: sourceURL)!
+    progress.wrappedValue = 10
+    progressLabel.wrappedValue = "Downloading HTML..."
     downloadHTML(url: url) { content in
+        progress.wrappedValue = 30
+        progressLabel.wrappedValue = "Parsing HTML..."
         guard let html = content else {
             print("error")
             completion(nil)
@@ -162,6 +164,8 @@ func fetchAlbumArtVideo(from sourceURL: String, completion: @escaping (URL?) -> 
             completion(nil)
             return
         }
+        progress.wrappedValue = 40
+        progressLabel.wrappedValue = "Downloading M3U8 File..."
         downloadFile(from: videoSrc) { fileURL in
             guard let fileURL = fileURL else {
                 print("error3")
@@ -173,6 +177,8 @@ func fetchAlbumArtVideo(from sourceURL: String, completion: @escaping (URL?) -> 
                 completion(nil)
                 return
             }
+            progress.wrappedValue = 60
+            progressLabel.wrappedValue = "Downloading 2nd M3U8 File..."
             downloadFile(from: videoRawLink) { rawFileURL in
                 guard let rawFileURL = rawFileURL else {
                     print("error5")
@@ -189,6 +195,8 @@ func fetchAlbumArtVideo(from sourceURL: String, completion: @escaping (URL?) -> 
                     completion(nil)
                     return
                 }
+                progress.wrappedValue = 80
+                progressLabel.wrappedValue = "Downloading Album Art Video..."
                 downloadVideo(from: videoURL) { videoFileURL in
                     completion(videoFileURL)
                 }

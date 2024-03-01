@@ -10,51 +10,6 @@ import Photos
 import PhotosUI
 import TipKit
 
-struct URLTip: Tip {
-    var title: Text {
-        Text("Offline Demo Mode")
-            .foregroundStyle(.indigo)
-    }
-    var message: Text? {
-        Text("Since Swift Student Challenge submissions can't access the internet, for demo purposes, I've pre-entered a URL for ME&BAE playlist and will use a pre-downloaded local resource for fetching.")
-    }
-}
-
-struct ShortcutTip: Tip {
-    var title: Text {
-        Text("Workaround for lacking wallpaper setting API")
-            .foregroundStyle(.indigo)
-    }
-    var message: Text? {
-        Text("In iOS, there's no direct system API to set the wallpaper, but I can use a pre-imported shortcut with **URLScheme**, saving users from switching back and forth between the Photos App and this App.")
-    }
-}
-
-struct SaveTip: Tip {
-    var title: Text {
-        Text("Please save this Live Wallpaper")
-            .foregroundStyle(.indigo)
-    }
-    var message: Text? {
-        Text("You will need it for the next steps - setting it as a Live Wallpaper.")
-    }
-}
-
-struct DoneTip: Tip {
-    var title: Text {
-        Text("Thank you for experiencing!")
-            .foregroundStyle(.indigo)
-    }
-    var message: Text? {
-        Text("Feel free to return to the main page and explore other pre-loaded awesome album arts.")
-    }
-    var actions: [Action] {
-        [
-            Action(id: "go-back", title: "Go back")
-        ]
-    }
-}
-
 struct ProjectView: View {
     @Environment(\.presentationMode) var presentationMode
     var project: Project
@@ -62,15 +17,17 @@ struct ProjectView: View {
     
     @State private var albumURL: String = "https://music.apple.com/us/playlist/me-and-bae/pl.a13aca4f4f2c45538472de9014057cc0"
     @State private var timer: Timer?
-    @State private var currentFetchState = "Ready"
     @State private var shouldPlayLPPreview = false
     @State private var shouldPlayLWPreview = false
     @State private var isShowingShareSheet = false
-    @State private var generateProgress = 0.0
-    @State private var progressLabel = "Ready"
     @State private var isShowingLPSaved = false
     @State private var isShowingLWSaved = false
     @State private var isShowingInvokeFailed = false
+    @State private var generateProgress = 0.0
+    @State private var generateProgressLabel = "Ready"
+
+    @State private var fetchProgress = 0.0
+    @State private var fetchProgressLabel = "Ready"
         
 //    private var project: Project {
 //        return viewModel.projects.first(where: { $0.id == projectId })!
@@ -115,37 +72,18 @@ struct ProjectView: View {
                                     .textFieldStyle(RoundedBorderTextFieldStyle()) // Gives the text field a rounded border
                                     .padding(.trailing, 8)
                                 Button("Fetch") {
-                                    fetchAlbum(scrollViewProxy: proxy)
+                                    withAnimation {
+                                        fetchAlbum(scrollViewProxy: proxy)
+                                    }
+                                    
                                 }
                                 .buttonStyle(BorderedProminentButtonStyle())
                             }
                             .padding(.bottom, 10)
-                            TipView(URLTip(), arrowEdge: .top)
-                                .padding(.bottom, 20)
-                            HStack {
-                                if currentFetchState == "Done" {
-                                    Text(currentFetchState)
-                                        .foregroundStyle(.green)
-                                        .animation(.linear, value: currentFetchState)
-                                        .padding()
-                                    Image(systemName: "checkmark.circle.fill")
-                                        .foregroundStyle(.green)
-                                } else if currentFetchState == "Ready" {
-                                    Text(currentFetchState)
-                                        .foregroundStyle(.green)
-                                        .animation(.linear, value: currentFetchState)
-                                        .padding()
-                                } else {
-                                    ProgressView()
-                                    Text(currentFetchState)
-                                        .padding()
-                                        .animation(.linear, value: currentFetchState)
-                                }
+                            ProgressView(value: fetchProgress, total: 100) {} currentValueLabel: {
+                                Text(fetchProgressLabel)
                             }
                             .padding()
-                            .frame(maxWidth: .infinity)
-                            .background(.ultraThinMaterial)
-                            .cornerRadius(20)
                             paddedAnchor(forStep: 2)
                         }
                         .frame(maxWidth: .infinity)
@@ -173,10 +111,10 @@ struct ProjectView: View {
                             HStack {
                                 Button("Generate") {
                                     withAnimation {
-                                        progressLabel = "processing live photo..."
+                                        generateProgressLabel = "processing live photo..."
                                     }
-                                    generateLivePhoto(for: project.name, progress: $generateProgress, progressLabel: $progressLabel) {
-                                        generateLiveWallpaper(for: project.name, progress: $generateProgress, progressLabel: $progressLabel) {
+                                    generateLivePhoto() {
+                                        generateLiveWallpaper() {
                                             print("goto step 3")
                                             goToStep(3, with: proxy)
                                         }
@@ -191,7 +129,7 @@ struct ProjectView: View {
                             }
                             .padding(.top)
                             ProgressView(value: generateProgress, total: 100) {} currentValueLabel: {
-                                Text(progressLabel)
+                                Text(generateProgressLabel)
                             }
                             .padding()
                             paddedAnchor(forStep: 3)
@@ -317,9 +255,6 @@ struct ProjectView: View {
                                         alignment: .center // Ensure the symbol is centered within the rectangle
                                     )
                             }
-                            if project.currentStep == 4 {
-                                TipView(SaveTip(), arrowEdge: .bottom)
-                            }
                             HStack {
                                 Button("Play") {
                                     shouldPlayLWPreview.toggle()
@@ -374,10 +309,6 @@ struct ProjectView: View {
                                 .padding(.bottom, 5)
                             Text("You have the option to manually set it via the Photos App or use our one-click shortcut to bring up the wallpaper setting screen.")
                                 .padding(.bottom, 10)
-                            if project.currentStep == 5 {
-                                TipView(ShortcutTip(), arrowEdge: .top)
-                                    .padding(.bottom, 10)
-                            }
                             HStack {
                                 Button("Import Shortcut") {
                                     isShowingShareSheet = true
@@ -440,14 +371,6 @@ struct ProjectView: View {
                             .font(.largeTitle)
                             .fontDesign(.monospaced)
                             .padding(.bottom, 30)
-                        if project.currentStep == 6 {
-                            TipView(DoneTip(), arrowEdge: .bottom) { action in
-                                if action.id == "go-back" {
-                                    presentationMode.wrappedValue.dismiss()
-                                }
-                            }
-                            .padding()
-                        }
                         VStack {
                             VStack {
                                 ResultView(project: project)
@@ -473,14 +396,19 @@ struct ProjectView: View {
         }
     }
     
-    func generateLivePhoto(for name: String, progress: Binding<Double>, progressLabel: Binding<String>, completion: @escaping () -> Void) {
-        transcodeLive("Photo", for: project.name, progress: progress, progressLabel: progressLabel) { result in
+    func generateLivePhoto(completion: @escaping () -> Void) {
+        guard let rawVideoFileURL = project.rawVideoFileURL else {
+            print("no video file")
+            completion()
+            return
+        }
+        transcodeLive("Photo", for: rawVideoFileURL, progress: $generateProgress, progressLabel: $generateProgressLabel) { result in
             switch result {
             case .success(let urls):
                 let videoURL = urls[0]
                 let photoURL = urls[1]
                 print("gen succeeded")
-                progressLabel.wrappedValue = "Generating Live Photo..."
+                generateProgressLabel = "Generating Live Photo..."
                 PHLivePhoto.request(withResourceFileURLs: [photoURL, videoURL], placeholderImage: nil, targetSize: CGSize.zero, contentMode: PHImageContentMode.aspectFit, resultHandler: { (livePhoto: PHLivePhoto?, info: [AnyHashable : Any]) -> Void in
                     if let isDegraded = info[PHLivePhotoInfoIsDegradedKey] as? Bool, isDegraded {
                         return
@@ -490,8 +418,8 @@ struct ProjectView: View {
                     }
                     withAnimation {
                         project.livePhoto = LivePhoto(pairedImage: photoURL, pairedVideo: videoURL, livePhoto: livePhoto)
-                        progressLabel.wrappedValue = "Live Photo generated..."
-                        progress.wrappedValue = 50
+                        generateProgressLabel = "Live Photo generated..."
+                        generateProgress = 50
                         completion()
                     }
                 })
@@ -501,14 +429,19 @@ struct ProjectView: View {
         }
     }
     
-    func generateLiveWallpaper(for name: String, progress: Binding<Double>, progressLabel: Binding<String>, completion: @escaping () -> Void) {
-        transcodeLive("Wallpaper", for: project.name, progress: progress, progressLabel: progressLabel) { result in
+    func generateLiveWallpaper(completion: @escaping () -> Void) {
+        guard let rawVideoFileURL = project.rawVideoFileURL else {
+            print("no video file")
+            completion()
+            return
+        }
+        transcodeLive("Wallpaper", for: rawVideoFileURL, progress: $generateProgress, progressLabel: $generateProgressLabel) { result in
             switch result {
             case .success(let urls):
                 let videoURL = urls[0]
                 let photoURL = urls[1]
                 print("gen succeeded")
-                progressLabel.wrappedValue = "Generating Live Wallpaper..."
+                generateProgressLabel = "Generating Live Wallpaper..."
                 PHLivePhoto.request(withResourceFileURLs: [photoURL, videoURL], placeholderImage: nil, targetSize: CGSize.zero, contentMode: PHImageContentMode.aspectFit, resultHandler: { (livePhoto: PHLivePhoto?, info: [AnyHashable : Any]) -> Void in
                     if let isDegraded = info[PHLivePhotoInfoIsDegradedKey] as? Bool, isDegraded {
                         return
@@ -518,8 +451,8 @@ struct ProjectView: View {
                     }
                     withAnimation {
                         project.liveWallpaper = LivePhoto(pairedImage: photoURL, pairedVideo: videoURL, livePhoto: livePhoto)
-                        progressLabel.wrappedValue = "Live Wallpaper generated. Done."
-                        progress.wrappedValue = 100
+                        generateProgressLabel = "Live Wallpaper generated. Done."
+                        generateProgress = 100
                         completion()
                     }
                 })
@@ -554,24 +487,12 @@ struct ProjectView: View {
     
     // Function to handle text change
     func fetchAlbum(scrollViewProxy: ScrollViewProxy) {
-        currentFetchState = fetchStates[0] // Reset text
-        var index = 0 // Start from the first text
-        // Invalidate existing timer if any
-        timer?.invalidate()
-        // Create a new timer
-        timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { _ in
-            if index < fetchStates.count {
-                withAnimation(.easeInOut(duration: 0.75)) {
-                    currentFetchState = fetchStates[index]
-                }
-                index += 1
-            } else {
-                withAnimation(.easeInOut(duration: 0.75)) {
-                    project.name = "emoji"
-                }
-                goToStep(2, with: scrollViewProxy)
-                timer?.invalidate()
+        fetchAlbumArtVideo(from: albumURL, progress: $fetchProgress, progressLabel: $fetchProgressLabel) { fileURL in
+            withAnimation {
+                fetchProgress = 100
+                fetchProgressLabel = "Album Art Downloaded."
             }
+            project.rawVideoFileURL = fileURL
         }
     }
 }

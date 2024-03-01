@@ -15,11 +15,6 @@ struct GuideView: View {
         VStack {
             if page == 0 {
                 Group {
-                    Button("hello") {
-                        fetchAlbumArtVideo(from: "https://music.apple.com/us/playlist/me-and-bae/pl.a13aca4f4f2c45538472de9014057cc0") { videoFileURL in
-                                print(videoFileURL)
-                        }
-                    }
                     Text("Welcome to LiveArt!")
                         .font(.largeTitle)
                         .fontDesign(.serif)

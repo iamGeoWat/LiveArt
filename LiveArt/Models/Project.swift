@@ -27,6 +27,7 @@ final class Project {
     let type: ProjectType
     var livePhoto: LivePhoto?
     var liveWallpaper: LivePhoto?
+    var rawVideoFileURL: URL?
     
     init(name: String, type: ProjectType) {
         self.id = UUID()
