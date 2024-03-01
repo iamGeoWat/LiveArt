@@ -57,7 +57,7 @@ struct DoneTip: Tip {
 
 struct ProjectView: View {
     @Environment(\.presentationMode) var presentationMode
-    @Bindable var project: Project
+    var project: Project
     
     
     @State private var albumURL: String = "https://music.apple.com/us/playlist/me-and-bae/pl.a13aca4f4f2c45538472de9014057cc0"
@@ -249,11 +249,11 @@ struct ProjectView: View {
                                 }
                                 .buttonStyle(BorderedButtonStyle())
                                 Button("Save") {
-                                    guard let livePhoto = project.livePhoto else {
+                                    guard let lp = project.livePhoto else {
                                         print("live photo not in project")
                                         return
                                     }
-                                    saveLivePhotoToLibrary(from: livePhoto.livePhotoResources)
+                                    saveLivePhotoToLibrary(pairedImage: lp.pairedImage, pairedVideo: lp.pairedVideo) 
                                     print("saving")
                                     isShowingLPSaved = true
                                 }
@@ -331,7 +331,7 @@ struct ProjectView: View {
                                         print("Live wallpaper not in project")
                                         return
                                     }
-                                    saveLivePhotoToLibrary(from: liveWallpaper.livePhotoResources)
+                                    saveLivePhotoToLibrary(pairedImage: liveWallpaper.pairedImage, pairedVideo: liveWallpaper.pairedVideo)
                                     isShowingLWSaved = true
                                     print("saving")
                                 }
@@ -489,7 +489,7 @@ struct ProjectView: View {
                         return
                     }
                     withAnimation {
-                        project.livePhoto = LivePhoto(livePhoto: livePhoto, livePhotoResources: (pairedImage: photoURL, pairedVideo: videoURL))
+                        project.livePhoto = LivePhoto(pairedImage: photoURL, pairedVideo: videoURL, livePhoto: livePhoto)
                         progressLabel.wrappedValue = "Live Photo generated..."
                         progress.wrappedValue = 50
                         completion()
@@ -517,7 +517,7 @@ struct ProjectView: View {
                         return
                     }
                     withAnimation {
-                        project.liveWallpaper = LivePhoto(livePhoto: livePhoto, livePhotoResources: (pairedImage: photoURL, pairedVideo: videoURL))
+                        project.liveWallpaper = LivePhoto(pairedImage: photoURL, pairedVideo: videoURL, livePhoto: livePhoto)
                         progressLabel.wrappedValue = "Live Wallpaper generated. Done."
                         progress.wrappedValue = 100
                         completion()

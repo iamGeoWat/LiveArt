@@ -9,12 +9,14 @@ import Foundation
 import Photos
 import SwiftData
 
+enum ProjectType: Codable {
+    case LiveAlbum
+    case UploadedVideo
+}
+
 @Model
 final class Project {
-    enum ProjectType {
-        case LiveAlbum
-        case UploadedVideo
-    }
+    
     let id: UUID
     var currentStep: Int
     let creationDate: String

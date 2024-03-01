@@ -16,7 +16,6 @@ func fetchWebPage(url: URL, completion: @escaping (String?) -> Void) {
             return
         }
         let content = String(data: data, encoding: .utf8)
-        print("content", content)
         completion(content)
     }
     task.resume()

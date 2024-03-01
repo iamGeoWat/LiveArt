@@ -9,24 +9,21 @@ import SwiftUI
 import Photos
 
 struct ResultView: View {
+    var project: Project
+
     @Namespace private var ns
     @State private var viewType = "LP"
     @State private var shouldPlay = false
-    @ObservedObject var viewModel: ViewModel
-    var projectId: UUID
     @State private var isShowingSaved = false
     
-    private var project: ProjectModel {
-        return viewModel.projects.first(where: { $0.id == projectId })!
-    }
     
     var body: some View {
         // Project Result
         VStack(alignment: .center) {
             HStack {
                 Group {
-                    if let lp = viewType == "LP" ? project.livePhoto : project.liveWallpaper {
-                        LivePhotoViewRep(livePhoto: lp.livePhoto, shouldPlay: $shouldPlay, repetitivePlay: false)
+                    if let lp = viewType == "LP" ? project.livePhoto?.livePhoto : project.liveWallpaper?.livePhoto {
+                        LivePhotoViewRep(livePhoto: lp, shouldPlay: $shouldPlay, repetitivePlay: false)
                                 .aspectRatio(viewType == "LP" ? 1/1 : 9/16, contentMode: viewType == "LP" ? .fit : .fill)
                                 .frame(maxWidth: 500)
                     } else {
@@ -141,7 +138,7 @@ struct ResultView: View {
                     .padding()
                     .onTapGesture {
                         if let lp = viewType == "LP" ? project.livePhoto : project.liveWallpaper {
-                            viewModel.saveLivePhotoToLibrary(from: lp.livePhotoResources)
+                            saveLivePhotoToLibrary(pairedImage: lp.pairedImage, pairedVideo: lp.pairedVideo)
                         } else {
                             print("No Photo")
                         }
@@ -170,13 +167,14 @@ struct ResultView: View {
 }
 
 struct ResultViewPreview: View {
-    @State private var viewModel1 = ViewModel()
-    let previewProject1 = ProjectModel(name: "sos", type: .LiveAlbum, creationDate: "February 19, 2024", coverPhoto: "sos_photo", currentStep: 6, workInProgress: true, livePhoto: nil)
-    init() {
-        viewModel1.addProject(previewProject1)
+    var previewProject = Project(name: "speak_now", type: .LiveAlbum)
+    static func printDocumentDirectoryPath() {
+        if let path = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first {
+            print("Document Directory Path: \(path)")
+        }
     }
     var body: some View {
-        ResultView(viewModel: viewModel1, projectId: previewProject1.id)
+        ResultView(project: previewProject)
     }
 }
 

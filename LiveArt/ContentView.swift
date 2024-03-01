@@ -74,12 +74,12 @@ struct ContentView: View {
                     ActionSheet(title: Text("Choose Project Type"), message: Text("Choose your Live Photo's video source. You can select a live album art from Apple Music or a video from your Photos library."), buttons: [
                         .cancel(),
                         .default(Text("Create Live Album Art")) {
-                            let newAlbumProject = Project(name: "New Project", type: .LiveAlbum, creationDate: todayDate, coverPhoto: nil, currentStep: 1, workInProgress: true, livePhoto: nil)
+                            let newAlbumProject = Project(name: "New Project", type: .LiveAlbum)
                             modelContext.insert(newAlbumProject)
                             presentedProjects.append(newAlbumProject)
                         },
                         .default(Text("WIP: Create Live Photo from Video")) {
-                            let newVideoProject = Project(name: "New Project", type: .LiveAlbum, creationDate: todayDate, coverPhoto: nil, currentStep: 1, workInProgress: true, livePhoto: nil)
+                            let newVideoProject = Project(name: "New Project", type: .UploadedVideo)
                             modelContext.insert(newVideoProject)
                             presentedProjects.append(newVideoProject)
                         },
@@ -165,4 +165,5 @@ struct ContentView: View {
 #Preview {
     ContentView()
         .modelContainer(for: Item.self, inMemory: true)
+        .modelContainer(for: Project.self, inMemory: true)
 }
