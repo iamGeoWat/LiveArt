@@ -28,10 +28,7 @@ struct ProjectView: View {
 
     @State private var fetchProgress = 0.0
     @State private var fetchProgressLabel = "Ready"
-        
-//    private var project: Project {
-//        return viewModel.projects.first(where: { $0.id == projectId })!
-//    }
+
     
     let stepIds: [UUID] = (1...8).map { _ in UUID() }
     let fetchStates = ["Loading HTML", "Looking for video tag", "Downloading M3U8 file", "Done"]
@@ -385,6 +382,7 @@ struct ProjectView: View {
                 .padding(.horizontal)
                 .onAppear {
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                        print(project.currentStep)
                         withAnimation {
                             goToStep(project.currentStep, with: proxy)
                         }
@@ -482,30 +480,37 @@ struct ProjectView: View {
         withAnimation(.easeInOut(duration: 0.75)) {
             project.currentStep = step
             proxy.scrollTo(stepIds[step], anchor: .top)
+            print("went to step", project.currentStep)
         }
+        
     }
     
     // Function to handle text change
     func fetchAlbum(scrollViewProxy: ScrollViewProxy) {
         fetchAlbumArtVideo(from: albumURL, progress: $fetchProgress, progressLabel: $fetchProgressLabel) { fileURL in
+            project.rawVideoFileURL = fileURL
             withAnimation {
                 fetchProgress = 100
                 fetchProgressLabel = "Album Art Downloaded."
+                goToStep(2, with: scrollViewProxy)
             }
-            project.rawVideoFileURL = fileURL
         }
     }
 }
 
+import SwiftData
+
 struct ProjectViewPreview: View {
-    var previewProject = Project(name: "speak_now", type: .LiveAlbum)
+    @Environment(\.modelContext) private var modelContext
+    @Query private var projects: [Project]
+    
     static func printDocumentDirectoryPath() {
         if let path = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first {
             print("Document Directory Path: \(path)")
         }
     }
     var body: some View {
-        ProjectView(project: previewProject)
+        ProjectView(project: projects.first!)
             .onAppear {
                 ProjectViewPreview.printDocumentDirectoryPath()
             }
@@ -514,4 +519,5 @@ struct ProjectViewPreview: View {
 
 #Preview {
     ProjectViewPreview()
+        .modelContainer(previewContainer)
 }

@@ -17,6 +17,8 @@
 		2B120D002B9136E5004CC4E6 /* Transcoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B120CFF2B9136E5004CC4E6 /* Transcoder.swift */; };
 		2B120D022B913731004CC4E6 /* ViewModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B120D012B913731004CC4E6 /* ViewModels.swift */; };
 		2B120D052B91412F004CC4E6 /* Shortcut.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B120D042B91412F004CC4E6 /* Shortcut.swift */; };
+		FA1142662B91CBB600824BEC /* workingLivePhoto.MOV in Resources */ = {isa = PBXBuildFile; fileRef = FA1142652B91CBB600824BEC /* workingLivePhoto.MOV */; };
+		FA1142682B91CBFE00824BEC /* Set LivePhoto Wallpaper.shortcut in Resources */ = {isa = PBXBuildFile; fileRef = FA1142672B91CBFE00824BEC /* Set LivePhoto Wallpaper.shortcut */; };
 		FA32618C2B8F173900C1E5B2 /* LiveArtApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA32618B2B8F173900C1E5B2 /* LiveArtApp.swift */; };
 		FA32618E2B8F173900C1E5B2 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA32618D2B8F173900C1E5B2 /* ContentView.swift */; };
 		FA3261902B8F173900C1E5B2 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA32618F2B8F173900C1E5B2 /* Item.swift */; };
@@ -39,6 +41,9 @@
 		2B120CFF2B9136E5004CC4E6 /* Transcoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Transcoder.swift; sourceTree = "<group>"; };
 		2B120D012B913731004CC4E6 /* ViewModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModels.swift; sourceTree = "<group>"; };
 		2B120D042B91412F004CC4E6 /* Shortcut.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shortcut.swift; sourceTree = "<group>"; };
+		FA1142652B91CBB600824BEC /* workingLivePhoto.MOV */ = {isa = PBXFileReference; lastKnownFileType = video.quicktime; path = workingLivePhoto.MOV; sourceTree = "<group>"; };
+		FA1142672B91CBFE00824BEC /* Set LivePhoto Wallpaper.shortcut */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Set LivePhoto Wallpaper.shortcut"; sourceTree = "<group>"; };
+		FA1142692B91CDC600824BEC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		FA3261882B8F173900C1E5B2 /* LiveArt.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LiveArt.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FA32618B2B8F173900C1E5B2 /* LiveArtApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveArtApp.swift; sourceTree = "<group>"; };
 		FA32618D2B8F173900C1E5B2 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -77,6 +82,8 @@
 		2B120D032B9137B7004CC4E6 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				FA1142672B91CBFE00824BEC /* Set LivePhoto Wallpaper.shortcut */,
+				FA1142652B91CBB600824BEC /* workingLivePhoto.MOV */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -101,6 +108,7 @@
 		FA32618A2B8F173900C1E5B2 /* LiveArt */ = {
 			isa = PBXGroup;
 			children = (
+				FA1142692B91CDC600824BEC /* Info.plist */,
 				2B120D032B9137B7004CC4E6 /* Resources */,
 				2B120CF22B9135C7004CC4E6 /* Views */,
 				FA3261A22B8F24F900C1E5B2 /* Utils */,
@@ -208,8 +216,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				FA3261952B8F173A00C1E5B2 /* Preview Assets.xcassets in Resources */,
+				FA1142682B91CBFE00824BEC /* Set LivePhoto Wallpaper.shortcut in Resources */,
 				2B120CF12B9133C0004CC4E6 /* .gitignore in Resources */,
 				FA3261922B8F173A00C1E5B2 /* Assets.xcassets in Resources */,
+				FA1142662B91CBB600824BEC /* workingLivePhoto.MOV in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -371,6 +381,7 @@
 				DEVELOPMENT_TEAM = TVRHF7U882;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = LiveArt/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = LiveArt;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.video";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -402,6 +413,7 @@
 				DEVELOPMENT_TEAM = TVRHF7U882;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = LiveArt/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = LiveArt;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.video";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
