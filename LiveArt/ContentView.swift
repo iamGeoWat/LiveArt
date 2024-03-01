@@ -16,7 +16,7 @@ struct NewProjectTip: Tip {
     }
     
     var message: Text? {
-        Text("Let's start the demo by tapping this button to create a new project. Note: The option to create from a library video is under development; for now, it will guide you through creating from an album art.")
+        Text("Let's start the demo by creating a new project.")
     }
 }
 
@@ -30,7 +30,7 @@ struct ContentView: View {
     @State private var isShowingShareSheet = false
     @State private var showingActionSheet = false
     @State private var presentedProjects: [Project] = []
-    @State private var showNewUserGuide = true
+    @State private var showGuide = true
     @State private var showNewProjectTip = false
         
     var body: some View {
@@ -152,10 +152,10 @@ struct ContentView: View {
                 ProjectView(project: project)
             }
         }
-        .sheet(isPresented: $showNewUserGuide, onDismiss: {
+        .sheet(isPresented: $showGuide, onDismiss: {
             showNewProjectTip = true
         }) {
-            GuideView(show: $showNewUserGuide)
+            GuideView(show: $showGuide)
         }
     }
 }

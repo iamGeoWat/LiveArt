@@ -32,7 +32,7 @@ final class Project {
         self.id = UUID()
         self.currentStep = 1
         self.creationDate = todayDate
-        self.workInProgress = false
+        self.workInProgress = true
         self.coverPhoto = nil
         
         self.type = type
