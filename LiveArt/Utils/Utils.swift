@@ -9,6 +9,16 @@ import Foundation
 import Photos
 import SwiftUI
 
+enum GenerateType {
+    case Photo
+    case Wallpaper
+}
+
+enum ProjectType: Codable {
+    case LiveAlbum
+    case UploadedVideo
+}
+
 var todayDate: String {
     let today = Date()
     let dateFormatter = DateFormatter()

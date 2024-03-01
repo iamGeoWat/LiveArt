@@ -9,11 +9,6 @@ import Foundation
 import Photos
 import SwiftData
 
-enum ProjectType: Codable {
-    case LiveAlbum
-    case UploadedVideo
-}
-
 @Model
 final class Project {
     

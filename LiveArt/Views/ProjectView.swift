@@ -103,8 +103,8 @@ struct ProjectView: View {
                                     withAnimation {
                                         generateProgressLabel = "processing live photo..."
                                     }
-                                    generateLivePhoto() {
-                                        generateLiveWallpaper() {
+                                    generateLive(.Photo) {
+                                        generateLive(.Wallpaper) {
                                             print("goto step 3")
                                             goToStep(6, with: proxy)
                                         }
@@ -222,20 +222,20 @@ struct ProjectView: View {
         }
     }
     
-    func generateLivePhoto(completion: @escaping () -> Void) {
+    func generateLive(_ type: GenerateType, completion: @escaping () -> Void) {
         let setProgress = setProgressAnimated(progress: $generateProgress, label: $generateProgressLabel)
         guard let rawVideoFileURL = project.rawVideoFileURL else {
             print("no video file")
             completion()
             return
         }
-        transcodeLive("Photo", for: rawVideoFileURL, setProgress: setProgress) { result in
+        transcodeLive(type, for: rawVideoFileURL, setProgress: setProgress) { result in
             switch result {
             case .success(let urls):
                 let videoURL = urls[0]
                 let photoURL = urls[1]
                 print("gen succeeded")
-                setProgress(nil, "Generating Live Photo...")
+                setProgress(nil, "Generating Live \(type)...")
                 PHLivePhoto.request(withResourceFileURLs: [photoURL, videoURL], placeholderImage: nil, targetSize: CGSize.zero, contentMode: PHImageContentMode.aspectFit, resultHandler: { (livePhoto: PHLivePhoto?, info: [AnyHashable : Any]) -> Void in
                     if let isDegraded = info[PHLivePhotoInfoIsDegradedKey] as? Bool, isDegraded {
                         return
@@ -243,43 +243,19 @@ struct ProjectView: View {
                     guard let livePhoto = livePhoto else {
                         return
                     }
-                    withAnimation {
-                        project.livePhoto = LivePhoto(pairedImage: photoURL, pairedVideo: videoURL, livePhoto: livePhoto)
+                    if type == .Photo {
+                        withAnimation {
+                            project.livePhoto = LivePhoto(pairedImage: photoURL, pairedVideo: videoURL, livePhoto: livePhoto)
+                        }
                         setProgress(50, "Live Photo generated!")
                         completion()
+                    } else if type == .Wallpaper {
+                        withAnimation {
+                            project.liveWallpaper = LivePhoto(pairedImage: photoURL, pairedVideo: videoURL, livePhoto: livePhoto)
+                        }
+                        setProgress(100, "Live Wallpaper generated. Done.")
+                        completion()
                     }
-                })
-            default:
-                print("gen lp failed")
-            }
-        }
-    }
-    
-    func generateLiveWallpaper(completion: @escaping () -> Void) {
-        let setProgress = setProgressAnimated(progress: $generateProgress, label: $generateProgressLabel)
-        guard let rawVideoFileURL = project.rawVideoFileURL else {
-            print("no video file")
-            completion()
-            return
-        }
-        transcodeLive("Wallpaper", for: rawVideoFileURL, setProgress: setProgress) { result in
-            switch result {
-            case .success(let urls):
-                let videoURL = urls[0]
-                let photoURL = urls[1]
-                setProgress(nil, "Generating Live Wallpaper...")
-                PHLivePhoto.request(withResourceFileURLs: [photoURL, videoURL], placeholderImage: nil, targetSize: CGSize.zero, contentMode: PHImageContentMode.aspectFit, resultHandler: { (livePhoto: PHLivePhoto?, info: [AnyHashable : Any]) -> Void in
-                    if let isDegraded = info[PHLivePhotoInfoIsDegradedKey] as? Bool, isDegraded {
-                        return
-                    }
-                    guard let livePhoto = livePhoto else {
-                        return
-                    }
-                    withAnimation {
-                        project.liveWallpaper = LivePhoto(pairedImage: photoURL, pairedVideo: videoURL, livePhoto: livePhoto)
-                    }
-                    setProgress(100, "Live Wallpaper generated. Done.")
-                    completion()
                 })
             default:
                 print("gen lp failed")

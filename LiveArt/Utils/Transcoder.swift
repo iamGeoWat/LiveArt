@@ -12,7 +12,7 @@ import UniformTypeIdentifiers
 import SwiftUI
 
 // This function adds metadata to a video asset
-func transcodeLive(_ liveType: String, for rawVideoFileURL: URL, setProgress: @escaping (Double?, String?) -> Void, videoCompletion: @escaping (Result<[URL], Error>) -> Void) {
+func transcodeLive(_ liveType: GenerateType, for rawVideoFileURL: URL, setProgress: @escaping (Double?, String?) -> Void, videoCompletion: @escaping (Result<[URL], Error>) -> Void) {
     print("start transcoding")
     setProgress(0, "Loading resources and assets...")
     // Generate a unique identifier for the asset
@@ -62,7 +62,7 @@ func transcodeLive(_ liveType: String, for rawVideoFileURL: URL, setProgress: @e
         
         // Apply the cropping by setting the transform
         let layerInstruction = AVMutableVideoCompositionLayerInstruction(assetTrack: compositionTrack)
-        if liveType == "Wallpaper" {
+        if liveType == .Wallpaper {
             videoComposition.renderSize = CGSize(width: 1080, height: 1920)
             compositionTrack.scaleTimeRange(CMTimeRange(start: .zero, duration: sourceDuration), toDuration: targetDuration)
             instruction.timeRange = CMTimeRange(start: .zero, duration: targetDuration)
@@ -82,7 +82,7 @@ func transcodeLive(_ liveType: String, for rawVideoFileURL: URL, setProgress: @e
             transform = transform.scaledBy(x: scaleFactor, y: scaleFactor)
             transform = transform.translatedBy(x: -offsetX, y: -offsetY)
             layerInstruction.setTransform(transform, at: .zero)
-        } else if liveType == "Photo" {
+        } else if liveType == .Photo {
             instruction.timeRange = CMTimeRange(start: .zero, duration: sourceDuration)
         }
     
@@ -165,9 +165,9 @@ func transcodeLive(_ liveType: String, for rawVideoFileURL: URL, setProgress: @e
         
         Timer.scheduledTimer(withTimeInterval: 0.5, repeats: true) { timer in
             withAnimation {
-                if liveType == "Wallpaper" {
+                if liveType == .Wallpaper {
                     setProgress(Double(exporter.progress * 50.0) + 50, nil)
-                } else if liveType == "Photo" {
+                } else if liveType == .Photo {
                     setProgress(Double(exporter.progress * 50.0), nil)
                 }
             }
@@ -218,7 +218,7 @@ func transcodeLive(_ liveType: String, for rawVideoFileURL: URL, setProgress: @e
             // Set up the image generator to extract frames from the video
             let frameRate: Int32 = 60
             let imageGenerator = AVAssetImageGenerator(asset: videoAsset)
-            if liveType == "Wallpaper" {
+            if liveType == .Wallpaper {
                 imageGenerator.maximumSize = CGSize(width: 1080, height: 1920)
             }
             
@@ -265,10 +265,10 @@ func transcodeLive(_ liveType: String, for rawVideoFileURL: URL, setProgress: @e
                 // Create a CGContext for drawing the resized image
                 var width: Int = 0
                 var height: Int = 0
-                if liveType == "Wallpaper" {
+                if liveType == .Wallpaper {
                     width = 1080
                     height = 1920
-                } else if liveType == "Photo" {
+                } else if liveType == .Photo {
                     width = image.width
                     height = image.height
                 }
