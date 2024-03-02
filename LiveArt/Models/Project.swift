@@ -10,7 +10,7 @@ import Photos
 import SwiftData
 
 @Model
-final class Project {
+final class Project: ObservableObject {
     
     let id: UUID
     var currentStep: Int

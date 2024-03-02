@@ -12,7 +12,9 @@ import TipKit
 
 struct ProjectView: View {
     @Environment(\.presentationMode) var presentationMode
-    var project: Project
+    @ObservedObject var project: Project
+    @State private var livePhoto: PHLivePhoto?
+    @State private var liveWallpaper: PHLivePhoto?
     
     
     @State private var albumURL: String = "https://music.apple.com/us/playlist/me-and-bae/pl.a13aca4f4f2c45538472de9014057cc0"
@@ -106,7 +108,8 @@ struct ProjectView: View {
                                     generateLive(.Photo) {
                                         generateLive(.Wallpaper) {
                                             print("goto step 3")
-                                            goToStep(6, with: proxy)
+                                            project.workInProgress = false
+                                            goToStep(3, with: proxy)
                                         }
                                     }
                                 }
@@ -122,7 +125,6 @@ struct ProjectView: View {
                                 Text(generateProgressLabel)
                             }
                             .padding()
-                            paddedAnchor(forStep: 3)
                         }
                         .frame(maxWidth: .infinity)
                         .cornerRadius(10)
@@ -137,7 +139,7 @@ struct ProjectView: View {
                                     .imageScale(.medium)
                                     .font(.footnote)
                             }
-                            .foregroundColor(colorForStep(6, when: project.currentStep))
+                            .foregroundColor(colorForStep(3, when: project.currentStep))
                             VStack(alignment: .leading, spacing: 4) {
                                 Text("Finished")
                                     .font(.footnote)
@@ -149,7 +151,7 @@ struct ProjectView: View {
                             .cornerRadius(10)
                             .padding(.bottom, 30)
                         }
-                        .id(stepIds[6])
+                        .id(stepIds[3])
                         // Project Result
                         Text("View your result")
                             .font(.largeTitle)
@@ -182,33 +184,39 @@ struct ProjectView: View {
                                 .alert("Set failed. Please import the shortcut to your Shortcut App first.", isPresented: $isShowingInvokeFailed) {
                                     Button("OK", role: .cancel) {}
                                 }
-                                Button("Finish") {
-                                    print("go next")
-                                    goToStep(6, with: proxy)
-                                    project.workInProgress = false
-                                }
-                                .buttonStyle(BorderedProminentButtonStyle())
                                 Spacer()
                             }
-                            paddedAnchor(forStep: 6)
                         }
                         .frame(maxWidth: .infinity)
                         .cornerRadius(10)
-                        .opacity(project.currentStep != 5 ? 0.5: 1.0)
-                        .disabled(project.currentStep != 6)
+                        .padding(.bottom, 10)
                         VStack {
                             VStack {
-                                ResultView(project: project)
+                                ResultView(livePhoto: livePhoto, liveWallpaper: liveWallpaper) {
+                                    if let pairedImage = project.livePhoto?.pairedImage,
+                                       let pairedVideo = project.livePhoto?.pairedVideo {
+                                        saveLivePhotoToLibrary(pairedImage: pairedImage, pairedVideo: pairedVideo)
+                                    }
+                                }
                             }
                             .frame(maxWidth: 500)
                             Spacer()
                         }
                     }
-                    .opacity(project.currentStep != 6 ? 0.5: 1.0)
-                    .disabled(project.currentStep != 6)
+                    .opacity(project.currentStep != 3 ? 0.5: 1.0)
+                    .disabled(project.currentStep != 3)
                 }
                 .padding(.horizontal)
                 .onAppear {
+                    if let projectLivePhoto = project.livePhoto,
+                       let projectLiveWallpaper = project.liveWallpaper {
+                        requestLivePhoto(photoURL: projectLivePhoto.pairedImage, videoURL: projectLivePhoto.pairedVideo, type: .Photo) { livePhotoResult in
+                            livePhoto = livePhotoResult
+                        }
+                        requestLivePhoto(photoURL: projectLiveWallpaper.pairedImage, videoURL: projectLiveWallpaper.pairedVideo, type: .Wallpaper) { livePhotoResult in
+                            liveWallpaper = livePhotoResult
+                        }
+                    }
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                         print(project.currentStep)
                         withAnimation {
@@ -222,7 +230,19 @@ struct ProjectView: View {
         }
     }
     
-    func generateLive(_ type: GenerateType, completion: @escaping () -> Void) {
+    func requestLivePhoto(photoURL: URL, videoURL: URL, type: LiveType, completion: @escaping (PHLivePhoto) -> Void) {
+        PHLivePhoto.request(withResourceFileURLs: [photoURL, videoURL], placeholderImage: nil, targetSize: CGSize.zero, contentMode: PHImageContentMode.aspectFit) { livePhotoResult, info in
+            if let isDegraded = info[PHLivePhotoInfoIsDegradedKey] as? Bool, isDegraded {
+                return
+            }
+            guard let livePhotoResult = livePhotoResult else {
+                return
+            }
+            completion(livePhotoResult)
+        }
+    }
+    
+    func generateLive(_ type: LiveType, completion: @escaping () -> Void) {
         let setProgress = setProgressAnimated(progress: $generateProgress, label: $generateProgressLabel)
         guard let rawVideoFileURL = project.rawVideoFileURL else {
             print("no video file")
@@ -236,27 +256,24 @@ struct ProjectView: View {
                 let photoURL = urls[1]
                 print("gen succeeded")
                 setProgress(nil, "Generating Live \(type)...")
-                PHLivePhoto.request(withResourceFileURLs: [photoURL, videoURL], placeholderImage: nil, targetSize: CGSize.zero, contentMode: PHImageContentMode.aspectFit, resultHandler: { (livePhoto: PHLivePhoto?, info: [AnyHashable : Any]) -> Void in
-                    if let isDegraded = info[PHLivePhotoInfoIsDegradedKey] as? Bool, isDegraded {
-                        return
-                    }
-                    guard let livePhoto = livePhoto else {
-                        return
-                    }
+                requestLivePhoto(photoURL: photoURL, videoURL: videoURL, type: type) { livePhotoResult in
                     if type == .Photo {
                         withAnimation {
-                            project.livePhoto = LivePhoto(pairedImage: photoURL, pairedVideo: videoURL, livePhoto: livePhoto)
+                            livePhoto = livePhotoResult
+                            project.livePhoto = LivePhoto(pairedImage: photoURL, pairedVideo: videoURL)
                         }
                         setProgress(50, "Live Photo generated!")
                         completion()
                     } else if type == .Wallpaper {
                         withAnimation {
-                            project.liveWallpaper = LivePhoto(pairedImage: photoURL, pairedVideo: videoURL, livePhoto: livePhoto)
+                            project.liveWallpaper = LivePhoto(pairedImage: photoURL, pairedVideo: videoURL)
+                            liveWallpaper = livePhotoResult
+
                         }
                         setProgress(100, "Live Wallpaper generated. Done.")
                         completion()
                     }
-                })
+                }
             default:
                 print("gen lp failed")
             }

@@ -9,21 +9,22 @@ import SwiftUI
 import Photos
 
 struct ResultView: View {
-    var project: Project
+    let livePhoto: PHLivePhoto?
+    let liveWallpaper: PHLivePhoto?
+    let saveLivePhoto: () -> Void
 
     @Namespace private var ns
     @State private var viewType = "LP"
     @State private var shouldPlay = false
     @State private var isShowingSaved = false
     
-    
     var body: some View {
         // Project Result
         VStack(alignment: .center) {
             HStack {
                 Group {
-                    if let lp = viewType == "LP" ? project.livePhoto?.livePhoto : project.liveWallpaper?.livePhoto {
-                        LivePhotoViewRep(livePhoto: lp, shouldPlay: $shouldPlay, repetitivePlay: false)
+                    if let livePhoto = livePhoto, let liveWallpaper = liveWallpaper {
+                        LivePhotoViewRep(livePhoto: viewType == "LP" ? livePhoto : liveWallpaper, shouldPlay: $shouldPlay, repetitivePlay: false)
                                 .aspectRatio(viewType == "LP" ? 1/1 : 9/16, contentMode: viewType == "LP" ? .fit : .fill)
                                 .frame(maxWidth: 500)
                     } else {
@@ -119,7 +120,7 @@ struct ResultView: View {
                     }
                     .padding()
                     .onTapGesture {
-                        if (viewType == "LP" ? project.livePhoto : project.liveWallpaper) != nil {
+                        if (viewType == "LP" ? livePhoto : liveWallpaper) != nil {
                             shouldPlay.toggle()
                         } else {
                             print("No Photo")
@@ -137,8 +138,8 @@ struct ResultView: View {
                     }
                     .padding()
                     .onTapGesture {
-                        if let lp = viewType == "LP" ? project.livePhoto : project.liveWallpaper {
-                            saveLivePhotoToLibrary(pairedImage: lp.pairedImage, pairedVideo: lp.pairedVideo)
+                        if (viewType == "LP" ? livePhoto : liveWallpaper) != nil {
+                            saveLivePhoto()
                         } else {
                             print("No Photo")
                         }
@@ -166,18 +167,6 @@ struct ResultView: View {
     }
 }
 
-struct ResultViewPreview: View {
-    var previewProject = Project(name: "speak_now", type: .LiveAlbum)
-    static func printDocumentDirectoryPath() {
-        if let path = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first {
-            print("Document Directory Path: \(path)")
-        }
-    }
-    var body: some View {
-        ResultView(project: previewProject)
-    }
-}
-
 #Preview {
-    ResultViewPreview()
+    ResultView(livePhoto: nil, liveWallpaper: nil) {}
 }

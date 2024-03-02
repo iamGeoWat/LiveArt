@@ -16,7 +16,7 @@ enum ExportError: Error {
     case unknown
 }
 
-enum GenerateType {
+enum LiveType {
     case Photo
     case Wallpaper
 }

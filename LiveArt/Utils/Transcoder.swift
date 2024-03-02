@@ -12,7 +12,7 @@ import UniformTypeIdentifiers
 import SwiftUI
 
 // This function adds metadata to a video asset
-func transcodeLive(_ liveType: GenerateType, for rawVideoFileURL: URL, setProgress: @escaping (Double?, String?) -> Void, videoCompletion: @escaping (Result<[URL], Error>) -> Void) {
+func transcodeLive(_ liveType: LiveType, for rawVideoFileURL: URL, setProgress: @escaping (Double?, String?) -> Void, videoCompletion: @escaping (Result<[URL], Error>) -> Void) {
     print("start transcoding")
     setProgress(0, "Loading resources and assets...")
     // Generate a unique identifier for the asset
