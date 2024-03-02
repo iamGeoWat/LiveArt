@@ -112,7 +112,7 @@ func getFinalVideoURL(url: String, fileName: String) -> String? {
     }
 }
 
-func downloadVideo(from urlString: String, completion: @escaping (URL?) -> Void) {
+func downloadVideo(from urlString: String, setProgress: @escaping (Double?, String?) -> Void, completion: @escaping (URL?) -> Void) {
     guard let url = URL(string: urlString) else {
         completion(nil)
         return
@@ -138,6 +138,15 @@ func downloadVideo(from urlString: String, completion: @escaping (URL?) -> Void)
             completion(nil)
         }
     }
+    print(123123)
+    
+    Timer.scheduledTimer(withTimeInterval: 0.5, repeats: true) { timer in
+        print(1)
+        setProgress(downloadTask.progress.fractionCompleted*50 + 50, nil)
+        if downloadTask.state == .canceling || downloadTask.state == .completed {
+            timer.invalidate()
+        }
+    }
     
     downloadTask.resume()
 }
@@ -146,7 +155,7 @@ func fetchAlbumArtVideo(from sourceURL: String, setProgress: @escaping (Double?,
     let url = URL(string: sourceURL)!
     setProgress(10, "Downloading HTML...")
     downloadHTML(url: url) { content in
-        setProgress(30, "Parsing HTML...")
+        setProgress(20, "Parsing HTML...")
         guard let html = content else {
             print("error")
             completion(nil)
@@ -162,7 +171,7 @@ func fetchAlbumArtVideo(from sourceURL: String, setProgress: @escaping (Double?,
             completion(nil)
             return
         }
-        setProgress(40, "Downloading M3U8 File...")
+        setProgress(30, "Downloading M3U8 File...")
         downloadFile(from: videoSrc) { fileURL in
             guard let fileURL = fileURL else {
                 print("error3")
@@ -174,7 +183,7 @@ func fetchAlbumArtVideo(from sourceURL: String, setProgress: @escaping (Double?,
                 completion(nil)
                 return
             }
-            setProgress(60, "Downloading 2nd M3U8 File...")
+            setProgress(40, "Downloading 2nd M3U8 File...")
             downloadFile(from: videoRawLink) { rawFileURL in
                 guard let rawFileURL = rawFileURL else {
                     print("error5")
@@ -191,8 +200,8 @@ func fetchAlbumArtVideo(from sourceURL: String, setProgress: @escaping (Double?,
                     completion(nil)
                     return
                 }
-                setProgress(80, "Downloading Album Art Video...")
-                downloadVideo(from: videoURL) { videoFileURL in
+                setProgress(50, "Downloading Album Art Video...")
+                downloadVideo(from: videoURL, setProgress: setProgress) { videoFileURL in
                     completion(videoFileURL)
                 }
             }

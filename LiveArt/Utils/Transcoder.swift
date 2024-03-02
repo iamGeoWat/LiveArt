@@ -23,15 +23,6 @@ func transcodeLive(_ liveType: GenerateType, for rawVideoFileURL: URL, setProgre
     let kKeySpaceQuickTimeMetadata = "mdta"
     let kKeyContentIdentifier = "com.apple.quicktime.content.identifier"
     
-    // Define the input and output URLs for the video processing
-    guard let workingLivePhotoBundlePath = Bundle.main.path(forResource: "workingLivePhoto", ofType: "MOV") else {
-        print("working lp not found")
-        return
-    }
-//    guard let inputMovieBundlePath = Bundle.main.path(forResource: "\(inputFileName)_raw", ofType: "mp4") else {
-//        print("input movie not found")
-//        return
-//    }
     guard let workingLivePhotoBundlePath = Bundle.main.path(forResource: "workingLivePhoto", ofType: "MOV") else {
         print("working lp not found")
         return
@@ -302,12 +293,4 @@ func transcodeLive(_ liveType: GenerateType, for rawVideoFileURL: URL, setProgre
         videoCompletion(.failure(ExportError.unknown))
         return
     }
-}
-
-
-enum ExportError: Error {
-    case exportSessionFailed
-    case couldNotFindDocumentDirectory
-    case exportCancelled
-    case unknown
 }

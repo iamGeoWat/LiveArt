@@ -9,6 +9,13 @@ import Foundation
 import Photos
 import SwiftUI
 
+enum ExportError: Error {
+    case exportSessionFailed
+    case couldNotFindDocumentDirectory
+    case exportCancelled
+    case unknown
+}
+
 enum GenerateType {
     case Photo
     case Wallpaper
