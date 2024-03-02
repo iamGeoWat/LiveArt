@@ -9,6 +9,8 @@ import Foundation
 import SwiftSoup
 import SwiftUI
 
+private var observation: NSKeyValueObservation?
+
 func downloadFile(from urlString: String, completion: @escaping (URL?) -> Void) {
     guard let url = URL(string: urlString) else {
         print("Invalid URL")
@@ -125,6 +127,8 @@ func downloadVideo(from urlString: String, setProgress: @escaping (Double?, Stri
         }
         
         do {
+            observation?.invalidate()
+            
             let documentsDirectory = try FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
             let savedURL = documentsDirectory.appendingPathComponent(url.lastPathComponent)
             
@@ -138,16 +142,9 @@ func downloadVideo(from urlString: String, setProgress: @escaping (Double?, Stri
             completion(nil)
         }
     }
-    print(123123)
-    
-    Timer.scheduledTimer(withTimeInterval: 0.5, repeats: true) { timer in
-        print(1)
-        setProgress(downloadTask.progress.fractionCompleted*50 + 50, nil)
-        if downloadTask.state == .canceling || downloadTask.state == .completed {
-            timer.invalidate()
-        }
+    observation = downloadTask.progress.observe(\.fractionCompleted) { progress, _ in
+        setProgress(progress.fractionCompleted*45 + 50, nil)
     }
-    
     downloadTask.resume()
 }
 
