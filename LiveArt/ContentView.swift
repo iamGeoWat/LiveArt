@@ -24,14 +24,14 @@ struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
     @Query private var projects: [Project]
     
-    
-
     @State private var shouldPlay = false
     @State private var isShowingShareSheet = false
     @State private var showingActionSheet = false
     @State private var presentedProjects: [Project] = []
-    @State private var showGuide = true
+    @State private var showGuide = false
     @State private var showNewProjectTip = false
+    @State private var isDeleting = false
+    @State private var isConfirmDeleting = false
         
     var body: some View {
         NavigationStack(path: $presentedProjects) {
@@ -97,9 +97,16 @@ struct ContentView: View {
                         .fontWeight(.bold) // Makes the text bolder
                     Text("\(projects.count)")
                         .fontDesign(.rounded)
+                    Spacer()
+                    Button(isDeleting ? "Cancel" : "Edit") {
+                        withAnimation {
+                            isDeleting.toggle()
+                        }
+                        
+                    }
                 }
                 .frame(maxWidth: .infinity, alignment: .leading) // Aligns HStack to the left
-                .padding(.leading)
+                .padding()
                 
                 ScrollView {
                     LazyVGrid(columns: [GridItem](repeating: .init(.flexible(), spacing: 20), count: 3), spacing: 20) {
@@ -129,21 +136,42 @@ struct ContentView: View {
                                         .cornerRadius(20)
                                 }
                                 .overlay(
-                                    project.workInProgress ?
-                                        ZStack {
-                                            RoundedRectangle(cornerRadius: 20).fill(Color.black.opacity(0.5))
-                                            Text("Work In Progress")
-                                                .foregroundColor(.white)
-                                                .fontDesign(.monospaced)
-                                                .fontWeight(.bold)
-                                        }
-                                        : nil
+                                    isDeleting ? ZStack {
+                                        RoundedRectangle(cornerRadius: 20)
+                                            .fill(Color.white.opacity(0.7))
+                                        Image(systemName: "trash.circle.fill")
+                                            .font(.largeTitle)
+                                            .foregroundStyle(.red)
+                                            .backgroundStyle(.white)
+                                            .shadow(radius: 10)
+                                    } : nil
+                                )
+                                .overlay(
+                                    !isDeleting && project.workInProgress ? ZStack {
+                                        RoundedRectangle(cornerRadius: 20)
+                                            .fill(Color.black.opacity(0.5))
+                                        Text("Work In Progress")
+                                            .foregroundColor(.white)
+                                            .fontDesign(.monospaced)
+                                            .fontWeight(.bold)
+                                    } : nil
                                 )
                                 .onTapGesture {
-                                    presentedProjects.append(project)
-                                    print(project)
+                                    if isDeleting {
+                                        isConfirmDeleting.toggle()
+                                    } else {
+                                        presentedProjects.append(project)
+                                    }
                                 }
-                                
+                                .alert("Are you sure?", isPresented: $isConfirmDeleting) {
+                                    Button("Cancel", role: .cancel) {}
+                                    Button("Delete", role: .destructive) {
+                                        withAnimation {
+                                            modelContext.delete(project)
+                                        }
+                                        
+                                    }
+                                }
                                 Text(project.creationDate)
                                     .font(.caption)
                                 Text(project.name)
