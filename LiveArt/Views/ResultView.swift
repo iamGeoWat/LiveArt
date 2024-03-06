@@ -14,12 +14,12 @@ struct ResultView: View {
     let saveLivePhoto: (LiveType) -> Void
 
     @Namespace private var ns
-    @State private var viewType = LiveType.Photo
+    @State private var liveType = LiveType.Photo
     @State private var shouldPlay = false
     @State private var isShowingSaved = false
     
     private var currentAspectRatio: CGSize {
-        switch viewType {
+        switch liveType {
         case .Photo:
             return CGSize(width: 1, height: 1)
         case .Wallpaper:
@@ -28,7 +28,7 @@ struct ResultView: View {
     }
     
     private var currentContentMode: ContentMode {
-        switch viewType {
+        switch liveType {
         case .Photo:
             return .fit
         case .Wallpaper:
@@ -37,7 +37,7 @@ struct ResultView: View {
     }
     
     private var currentLiveResource: PHLivePhoto? {
-        switch viewType {
+        switch liveType {
         case .Photo:
             return livePhoto
         case .Wallpaper:
@@ -79,7 +79,7 @@ struct ResultView: View {
                     }
                     .padding()
                     .background {
-                        if case .Photo = viewType {
+                        if case .Photo = liveType {
                             Rectangle()
                                 .fill(.clear)
                                 .background(Material.thin)
@@ -101,7 +101,7 @@ struct ResultView: View {
                     }
                     .padding()
                     .background {
-                        if case .Wallpaper = viewType {
+                        if case .Wallpaper = liveType {
                             Rectangle()
                                 .fill(.clear)
                                 .background(Material.thin)
@@ -166,7 +166,7 @@ struct ResultView: View {
                     .padding()
                     .onTapGesture {
                         if currentLiveResource != nil {
-                            saveLivePhoto(viewType)
+                            saveLivePhoto(liveType)
                         } else {
                             print("No Photo")
                         }
@@ -189,7 +189,7 @@ struct ResultView: View {
     
     func setViewType(_ newViewType: LiveType) {
         withAnimation(.bouncy(duration: 0.3)) {
-            viewType = newViewType
+            liveType = newViewType
         }
     }
 }
