@@ -76,7 +76,7 @@ struct ContentView: View {
                             modelContext.insert(newAlbumProject)
                             presentedProjects.append(newAlbumProject)
                         },
-                        .default(Text("WIP: Create Live Photo from Video")) {
+                        .default(Text("Create Live Photo from Video")) {
                             let newVideoProject = Project(name: "New Project", type: .UploadedVideo)
                             modelContext.insert(newVideoProject)
                             presentedProjects.append(newVideoProject)
@@ -185,7 +185,12 @@ struct ContentView: View {
                 .padding(.horizontal)
             }
             .navigationDestination(for: Project.self) { project in
-                ProjectView(project: project)
+                switch project.type {
+                case .LiveAlbum:
+                    ProjectView(project: project)
+                case .UploadedVideo:
+                    ProjectUploadedVideoView(project: project)
+                }
             }
         }
         .sheet(isPresented: $showGuide, onDismiss: {

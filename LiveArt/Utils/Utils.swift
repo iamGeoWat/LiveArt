@@ -9,6 +9,10 @@ import Foundation
 import Photos
 import SwiftUI
 
+enum TaskState {
+    case success, failed
+}
+
 enum ExportError: Error {
     case exportSessionFailed
     case couldNotFindDocumentDirectory
@@ -17,8 +21,7 @@ enum ExportError: Error {
 }
 
 enum LiveType {
-    case Photo
-    case Wallpaper
+    case Photo, Wallpaper
 }
 
 enum ProjectType: Codable {

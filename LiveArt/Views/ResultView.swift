@@ -11,26 +11,53 @@ import Photos
 struct ResultView: View {
     let livePhoto: PHLivePhoto?
     let liveWallpaper: PHLivePhoto?
-    let saveLivePhoto: () -> Void
+    let saveLivePhoto: (LiveType) -> Void
 
     @Namespace private var ns
-    @State private var viewType = "LP"
+    @State private var viewType = LiveType.Photo
     @State private var shouldPlay = false
     @State private var isShowingSaved = false
+    
+    private var currentAspectRatio: CGSize {
+        switch viewType {
+        case .Photo:
+            return CGSize(width: 1, height: 1)
+        case .Wallpaper:
+            return CGSize(width: 9, height: 16)
+        }
+    }
+    
+    private var currentContentMode: ContentMode {
+        switch viewType {
+        case .Photo:
+            return .fit
+        case .Wallpaper:
+            return .fill
+        }
+    }
+    
+    private var currentLiveResource: PHLivePhoto? {
+        switch viewType {
+        case .Photo:
+            return livePhoto
+        case .Wallpaper:
+            return liveWallpaper
+        }
+    }
     
     var body: some View {
         // Project Result
         VStack(alignment: .center) {
             HStack {
                 Group {
-                    if let livePhoto = livePhoto, let liveWallpaper = liveWallpaper {
-                        LivePhotoViewRep(livePhoto: viewType == "LP" ? livePhoto : liveWallpaper, shouldPlay: $shouldPlay, repetitivePlay: false)
-                                .aspectRatio(viewType == "LP" ? 1/1 : 9/16, contentMode: viewType == "LP" ? .fit : .fill)
+                    if let lp = currentLiveResource {
+                        LivePhotoViewRep(livePhoto: lp, shouldPlay: $shouldPlay, repetitivePlay: false)
+                                .aspectRatio(currentAspectRatio, contentMode: currentContentMode)
                                 .frame(maxWidth: 500)
                     } else {
                         Rectangle()
                             .fill(.gray)
-                            .aspectRatio(viewType == "LP" ? 1/1 : 9/16, contentMode: viewType == "LP" ? .fit : .fill)
+                            .aspectRatio(currentAspectRatio, contentMode: currentContentMode)
                             .frame(maxWidth: 500)
                             .overlay(
                                 Image(systemName: "photo.fill") // Use an SF Symbol
@@ -52,7 +79,7 @@ struct ResultView: View {
                     }
                     .padding()
                     .background {
-                        if viewType == "LP" {
+                        if case .Photo = viewType {
                             Rectangle()
                                 .fill(.clear)
                                 .background(Material.thin)
@@ -64,7 +91,7 @@ struct ResultView: View {
                         }
                     }
                     .onTapGesture {
-                        setViewType("LP")
+                        setViewType(.Photo)
                     }
                     Spacer()
                     HStack {
@@ -74,7 +101,7 @@ struct ResultView: View {
                     }
                     .padding()
                     .background {
-                        if viewType == "LW" {
+                        if case .Wallpaper = viewType {
                             Rectangle()
                                 .fill(.clear)
                                 .background(Material.thin)
@@ -86,7 +113,7 @@ struct ResultView: View {
                         }
                     }
                     .onTapGesture {
-                        setViewType("LW")
+                        setViewType(.Wallpaper)
                     }
                     Spacer()
                 }
@@ -120,7 +147,7 @@ struct ResultView: View {
                     }
                     .padding()
                     .onTapGesture {
-                        if (viewType == "LP" ? livePhoto : liveWallpaper) != nil {
+                        if currentLiveResource != nil {
                             shouldPlay.toggle()
                         } else {
                             print("No Photo")
@@ -138,14 +165,14 @@ struct ResultView: View {
                     }
                     .padding()
                     .onTapGesture {
-                        if (viewType == "LP" ? livePhoto : liveWallpaper) != nil {
-                            saveLivePhoto()
+                        if currentLiveResource != nil {
+                            saveLivePhoto(viewType)
                         } else {
                             print("No Photo")
                         }
                         isShowingSaved = true
                     }
-                    .alert("Live \(viewType == "LP" ? "Photo" : "Wallpaper") Saved", isPresented: $isShowingSaved) {
+                    .alert("Saved Successfully", isPresented: $isShowingSaved) {
                         Button("OK", role: .cancel) {}
                     }
                 }
@@ -160,7 +187,7 @@ struct ResultView: View {
         .frame(maxHeight: 850)
     }
     
-    func setViewType(_ newViewType: String) {
+    func setViewType(_ newViewType: LiveType) {
         withAnimation(.bouncy(duration: 0.3)) {
             viewType = newViewType
         }
@@ -168,5 +195,5 @@ struct ResultView: View {
 }
 
 #Preview {
-    ResultView(livePhoto: nil, liveWallpaper: nil) {}
+    ResultView(livePhoto: nil, liveWallpaper: nil) {_ in }
 }

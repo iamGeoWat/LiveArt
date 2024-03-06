@@ -8,6 +8,8 @@
 import Foundation
 import Photos
 import SwiftData
+import _PhotosUI_SwiftUI
+import SwiftUI
 
 @Model
 final class Project: ObservableObject {

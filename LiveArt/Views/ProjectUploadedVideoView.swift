@@ -10,22 +10,40 @@ import Photos
 import PhotosUI
 import TipKit
 
-struct ProjectView: View {
+struct Movie: Transferable {
+    let url: URL
+
+    static var transferRepresentation: some TransferRepresentation {
+        FileRepresentation(contentType: .movie) { movie in
+            SentTransferredFile(movie.url)
+        } importing: { received in
+            let name = UUID()
+            let copy = URL.documentsDirectory.appending(path: "\(name)_movie.mp4")
+
+            if FileManager.default.fileExists(atPath: copy.path()) {
+                try FileManager.default.removeItem(at: copy)
+            }
+
+            try FileManager.default.copyItem(at: received.file, to: copy)
+            return Self.init(url: copy)
+        }
+    }
+}
+
+struct ProjectUploadedVideoView: View {
     @Environment(\.presentationMode) var presentationMode
     @ObservedObject var project: Project
     @State private var livePhoto: PHLivePhoto?
     @State private var liveWallpaper: PHLivePhoto?
     
-    
-    @State private var albumURL: String = "https://music.apple.com/us/playlist/me-and-bae/pl.a13aca4f4f2c45538472de9014057cc0"
+    @State private var videoSelection: PhotosPickerItem?
     @State private var timer: Timer?
     @State private var isShowingShareSheet = false
     @State private var isShowingInvokeFailed = false
     
     @State private var generateProgress = 0.0
     @State private var generateProgressLabel = "Ready"
-    @State private var fetchProgress = 0.0
-    @State private var fetchProgressLabel = "Ready"
+    @State private var isLoadingVideo = false
     @State private var isShowingGenerateFailed = false
     
     let stepIds: [UUID] = (1...8).map { _ in UUID() }
@@ -56,26 +74,38 @@ struct ProjectView: View {
                         VStack(alignment: .leading, spacing: 4) {
                             Text("Step 1:")
                                 .font(.footnote)
-                            Text("Provide a link to an Apple Music album")
+                            Text("Choose a Video from Photos Library")
                                 .font(.headline)
                                 .padding(.bottom, 5)
                             HStack {
-                                TextField("Enter URL", text: $albumURL)
-                                    .textFieldStyle(RoundedBorderTextFieldStyle()) // Gives the text field a rounded border
-                                    .padding(.trailing, 8)
-                                Button("Fetch") {
-                                    withAnimation {
-                                        fetchAlbum(scrollViewProxy: proxy)
-                                    }
-                                    
+                                PhotosPicker(
+                                    selection: $videoSelection,
+                                    matching: .videos,
+                                    preferredItemEncoding: .automatic
+                                ) {
+                                    Text("Import")
                                 }
-                                .buttonStyle(BorderedProminentButtonStyle())
+                                .onChange(of: videoSelection) {
+                                    Task {
+                                        isLoadingVideo = true
+                                        if let movie = try? await videoSelection?.loadTransferable(type: Movie.self) {
+                                            isLoadingVideo = false
+                                            project.rawVideoFileURL = movie.url
+                                            goToStep(2, with: proxy)
+                                            print(movie.url)
+                                        } else {
+                                            isLoadingVideo = false
+                                        }
+                                    }
+                                }
+                                if isLoadingVideo {
+                                    ProgressView()
+                                        .padding(.leading, 5)
+                                    Text("Loading...")
+                                        .padding(.leading, 5)
+                                }
                             }
                             .padding(.bottom, 10)
-                            ProgressView(value: fetchProgress, total: 100) {} currentValueLabel: {
-                                Text(fetchProgressLabel)
-                            }
-                            .padding()
                             paddedAnchor(forStep: 2)
                         }
                         .frame(maxWidth: .infinity)
@@ -131,6 +161,7 @@ struct ProjectView: View {
                                 Spacer()
                             }
                             .padding(.top)
+                            
                             ProgressView(value: generateProgress, total: 100) {} currentValueLabel: {
                                 Text(generateProgressLabel)
                             }
@@ -323,25 +354,16 @@ struct ProjectView: View {
         
     }
     
-    // Function to handle text change
-    func fetchAlbum(scrollViewProxy: ScrollViewProxy) {
-        let setProgress = setProgressAnimated(progress: $fetchProgress, label: $fetchProgressLabel)
-        fetchAlbumArtVideo(from: albumURL, setProgress: setProgress) { fileURL in
-            project.rawVideoFileURL = fileURL
-            setProgress(100, "Album Art Downloaded.")
-            goToStep(2, with: scrollViewProxy)
-        }
-    }
 }
 
 import SwiftData
 
-struct ProjectViewPreview: View {
+struct ProjectUploadedVideoViewPreview: View {
     @Environment(\.modelContext) private var modelContext
     @Query private var projects: [Project]
     
     var body: some View {
-        ProjectView(project: projects.first!)
+        ProjectUploadedVideoView(project: projects.first!)
             .onAppear {
                 printDocumentDirectoryPath()
             }
@@ -349,6 +371,6 @@ struct ProjectViewPreview: View {
 }
 
 #Preview {
-    ProjectViewPreview()
+    ProjectUploadedVideoViewPreview()
         .modelContainer(previewContainer)
 }
