@@ -18,7 +18,7 @@ final class Project: ObservableObject {
     var currentStep: Int
     let creationDate: String
     var workInProgress: Bool
-    var coverPhoto: String?
+    var coverPhoto: URL?
 
     var name: String
     let type: ProjectType

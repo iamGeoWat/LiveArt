@@ -273,6 +273,7 @@ struct ProjectView: View {
                 let videoURL = urls[0]
                 let photoURL = urls[1]
                 print("gen succeeded")
+                project.coverPhoto = photoURL
                 setProgress(nil, "Generating Live \(type)...")
                 requestLivePhoto(photoURL: photoURL, videoURL: videoURL, type: type) { livePhotoResult in
                     if type == .Photo {

@@ -113,27 +113,28 @@ struct ContentView: View {
                         ForEach(projects) { project in
                             VStack {
                                 Group {
-                                    // TODO: project image
-//                                    if let lp = project.livePhoto?.livePhoto {
-//                                        LivePhotoViewRep(livePhoto: lp, shouldPlay: $shouldPlay, repetitivePlay: true)
-//                                            .aspectRatio(9/16, contentMode: .fill)
-//                                            .cornerRadius(20)
-//                                    } else {
-//                                        Image(project.coverPhoto ?? "project_placeholder")
-//                                            .resizable()
-//                                            .scaledToFill()
-//                                            .aspectRatio(9/16, contentMode: .fill)
-//                                            .frame(minWidth: 0, maxWidth: .infinity)
-//                                            .clipped()
-//                                            .cornerRadius(20)
-//                                    }
-                                    Image(project.coverPhoto ?? "project_placeholder")
-                                        .resizable()
-                                        .scaledToFill()
-                                        .aspectRatio(9/16, contentMode: .fill)
+                                    if let imgURL = project.coverPhoto {
+                                        AsyncImage(url: imgURL) { image in
+                                            image
+                                                .resizable()
+                                                .scaledToFill()
+                                                .aspectRatio(9/16, contentMode: .fill)
+//                                                .frame(minWidth: 0, maxWidth: .infinity)
+                                                .clipped()
+                                                .cornerRadius(20)
+                                        } placeholder: {
+                                            ProgressView()
+                                        }
                                         .frame(minWidth: 0, maxWidth: .infinity)
-                                        .clipped()
-                                        .cornerRadius(20)
+                                    } else {
+                                        Image("project_placeholder")
+                                            .resizable()
+                                            .scaledToFill()
+                                            .aspectRatio(9/16, contentMode: .fill)
+                                            .frame(minWidth: 0, maxWidth: .infinity)
+                                            .clipped()
+                                            .cornerRadius(20)
+                                    }
                                 }
                                 .overlay(
                                     isDeleting ? ZStack {
