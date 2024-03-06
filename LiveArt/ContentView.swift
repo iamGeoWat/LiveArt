@@ -117,15 +117,15 @@ struct ContentView: View {
                                         AsyncImage(url: imgURL) { image in
                                             image
                                                 .resizable()
-                                                .scaledToFill()
-                                                .aspectRatio(9/16, contentMode: .fill)
-//                                                .frame(minWidth: 0, maxWidth: .infinity)
-                                                .clipped()
-                                                .cornerRadius(20)
                                         } placeholder: {
-                                            ProgressView()
+                                            Image("project_placeholder")
+                                                .resizable()
                                         }
+                                        .scaledToFill()
+                                        .aspectRatio(9/16, contentMode: .fill)
                                         .frame(minWidth: 0, maxWidth: .infinity)
+                                        .clipped()
+                                        .cornerRadius(20)
                                     } else {
                                         Image("project_placeholder")
                                             .resizable()
