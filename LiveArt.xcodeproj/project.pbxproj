@@ -29,7 +29,49 @@
 		FA32619E2B8F248E00C1E5B2 /* LivePhoto.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA32619D2B8F248E00C1E5B2 /* LivePhoto.swift */; };
 		FA3261A02B8F24B900C1E5B2 /* Project.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA32619F2B8F24B900C1E5B2 /* Project.swift */; };
 		FA3261A52B91A89800C1E5B2 /* SwiftSoup in Frameworks */ = {isa = PBXBuildFile; productRef = FA3261A42B91A89800C1E5B2 /* SwiftSoup */; };
+		FAA628692B986D160064482E /* UniformTypeIdentifiers.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FAA6283F2B9865470064482E /* UniformTypeIdentifiers.framework */; };
+		FAA6286C2B986D160064482E /* Media.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FAA6286B2B986D160064482E /* Media.xcassets */; };
+		FAA6286E2B986D160064482E /* ActionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA6286D2B986D160064482E /* ActionViewController.swift */; };
+		FAA628712B986D160064482E /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FAA6286F2B986D160064482E /* MainInterface.storyboard */; };
+		FAA628752B986D160064482E /* OpenInLiveArt.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = FAA628682B986D160064482E /* OpenInLiveArt.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		FAA628932B986D830064482E /* UniformTypeIdentifiers.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FAA6283F2B9865470064482E /* UniformTypeIdentifiers.framework */; };
+		FAA628962B986D830064482E /* Media.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FAA628952B986D830064482E /* Media.xcassets */; };
+		FAA628982B986D830064482E /* ActionRequestHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA628972B986D830064482E /* ActionRequestHandler.swift */; };
+		FAA6289A2B986D830064482E /* Action.js in Resources */ = {isa = PBXBuildFile; fileRef = FAA628992B986D830064482E /* Action.js */; };
+		FAA6289E2B986D830064482E /* asdasdasd.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = FAA628922B986D830064482E /* asdasdasd.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		FAA628732B986D160064482E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FA3261802B8F173900C1E5B2 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = FAA628672B986D160064482E;
+			remoteInfo = OpenInLiveArt;
+		};
+		FAA6289C2B986D830064482E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FA3261802B8F173900C1E5B2 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = FAA628912B986D830064482E;
+			remoteInfo = asdasdasd;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		FAA628352B985AA60064482E /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				FAA628752B986D160064482E /* OpenInLiveArt.appex in Embed Foundation Extensions */,
+				FAA6289E2B986D830064482E /* asdasdasd.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		2B120CF02B9133C0004CC4E6 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
@@ -55,6 +97,17 @@
 		FA32619B2B8F246500C1E5B2 /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 		FA32619D2B8F248E00C1E5B2 /* LivePhoto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LivePhoto.swift; sourceTree = "<group>"; };
 		FA32619F2B8F24B900C1E5B2 /* Project.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Project.swift; sourceTree = "<group>"; };
+		FAA6283F2B9865470064482E /* UniformTypeIdentifiers.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UniformTypeIdentifiers.framework; path = System/Library/Frameworks/UniformTypeIdentifiers.framework; sourceTree = SDKROOT; };
+		FAA628682B986D160064482E /* OpenInLiveArt.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = OpenInLiveArt.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		FAA6286B2B986D160064482E /* Media.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Media.xcassets; sourceTree = "<group>"; };
+		FAA6286D2B986D160064482E /* ActionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionViewController.swift; sourceTree = "<group>"; };
+		FAA628702B986D160064482E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
+		FAA628722B986D160064482E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		FAA628922B986D830064482E /* asdasdasd.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = asdasdasd.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		FAA628952B986D830064482E /* Media.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Media.xcassets; sourceTree = "<group>"; };
+		FAA628972B986D830064482E /* ActionRequestHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionRequestHandler.swift; sourceTree = "<group>"; };
+		FAA628992B986D830064482E /* Action.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = Action.js; sourceTree = "<group>"; };
+		FAA6289B2B986D830064482E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,6 +116,22 @@
 			buildActionMask = 2147483647;
 			files = (
 				FA3261A52B91A89800C1E5B2 /* SwiftSoup in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FAA628652B986D160064482E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FAA628692B986D160064482E /* UniformTypeIdentifiers.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FAA6288F2B986D830064482E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FAA628932B986D830064482E /* UniformTypeIdentifiers.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -96,6 +165,9 @@
 			children = (
 				2B120CF02B9133C0004CC4E6 /* .gitignore */,
 				FA32618A2B8F173900C1E5B2 /* LiveArt */,
+				FAA6286A2B986D160064482E /* OpenInLiveArt */,
+				FAA628942B986D830064482E /* asdasdasd */,
+				FAA6283E2B9865470064482E /* Frameworks */,
 				FA3261892B8F173900C1E5B2 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -104,6 +176,8 @@
 			isa = PBXGroup;
 			children = (
 				FA3261882B8F173900C1E5B2 /* LiveArt.app */,
+				FAA628682B986D160064482E /* OpenInLiveArt.appex */,
+				FAA628922B986D830064482E /* asdasdasd.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -154,6 +228,36 @@
 			path = Utils;
 			sourceTree = "<group>";
 		};
+		FAA6283E2B9865470064482E /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				FAA6283F2B9865470064482E /* UniformTypeIdentifiers.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		FAA6286A2B986D160064482E /* OpenInLiveArt */ = {
+			isa = PBXGroup;
+			children = (
+				FAA6286B2B986D160064482E /* Media.xcassets */,
+				FAA6286D2B986D160064482E /* ActionViewController.swift */,
+				FAA6286F2B986D160064482E /* MainInterface.storyboard */,
+				FAA628722B986D160064482E /* Info.plist */,
+			);
+			path = OpenInLiveArt;
+			sourceTree = "<group>";
+		};
+		FAA628942B986D830064482E /* asdasdasd */ = {
+			isa = PBXGroup;
+			children = (
+				FAA628952B986D830064482E /* Media.xcassets */,
+				FAA628972B986D830064482E /* ActionRequestHandler.swift */,
+				FAA628992B986D830064482E /* Action.js */,
+				FAA6289B2B986D830064482E /* Info.plist */,
+			);
+			path = asdasdasd;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -164,10 +268,13 @@
 				FA3261842B8F173900C1E5B2 /* Sources */,
 				FA3261852B8F173900C1E5B2 /* Frameworks */,
 				FA3261862B8F173900C1E5B2 /* Resources */,
+				FAA628352B985AA60064482E /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				FAA628742B986D160064482E /* PBXTargetDependency */,
+				FAA6289D2B986D830064482E /* PBXTargetDependency */,
 			);
 			name = LiveArt;
 			packageProductDependencies = (
@@ -176,6 +283,40 @@
 			productName = LiveArt;
 			productReference = FA3261882B8F173900C1E5B2 /* LiveArt.app */;
 			productType = "com.apple.product-type.application";
+		};
+		FAA628672B986D160064482E /* OpenInLiveArt */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = FAA628762B986D160064482E /* Build configuration list for PBXNativeTarget "OpenInLiveArt" */;
+			buildPhases = (
+				FAA628642B986D160064482E /* Sources */,
+				FAA628652B986D160064482E /* Frameworks */,
+				FAA628662B986D160064482E /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = OpenInLiveArt;
+			productName = OpenInLiveArt;
+			productReference = FAA628682B986D160064482E /* OpenInLiveArt.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+		FAA628912B986D830064482E /* asdasdasd */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = FAA6289F2B986D830064482E /* Build configuration list for PBXNativeTarget "asdasdasd" */;
+			buildPhases = (
+				FAA6288E2B986D830064482E /* Sources */,
+				FAA6288F2B986D830064482E /* Frameworks */,
+				FAA628902B986D830064482E /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = asdasdasd;
+			productName = asdasdasd;
+			productReference = FAA628922B986D830064482E /* asdasdasd.appex */;
+			productType = "com.apple.product-type.app-extension";
 		};
 /* End PBXNativeTarget section */
 
@@ -188,6 +329,12 @@
 				LastUpgradeCheck = 1520;
 				TargetAttributes = {
 					FA3261872B8F173900C1E5B2 = {
+						CreatedOnToolsVersion = 15.2;
+					};
+					FAA628672B986D160064482E = {
+						CreatedOnToolsVersion = 15.2;
+					};
+					FAA628912B986D830064482E = {
 						CreatedOnToolsVersion = 15.2;
 					};
 				};
@@ -209,6 +356,8 @@
 			projectRoot = "";
 			targets = (
 				FA3261872B8F173900C1E5B2 /* LiveArt */,
+				FAA628672B986D160064482E /* OpenInLiveArt */,
+				FAA628912B986D830064482E /* asdasdasd */,
 			);
 		};
 /* End PBXProject section */
@@ -223,6 +372,24 @@
 				2B120CF12B9133C0004CC4E6 /* .gitignore in Resources */,
 				FA3261922B8F173A00C1E5B2 /* Assets.xcassets in Resources */,
 				FA1142662B91CBB600824BEC /* workingLivePhoto.MOV in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FAA628662B986D160064482E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FAA6286C2B986D160064482E /* Media.xcassets in Resources */,
+				FAA628712B986D160064482E /* MainInterface.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FAA628902B986D830064482E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FAA6289A2B986D830064482E /* Action.js in Resources */,
+				FAA628962B986D830064482E /* Media.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -252,7 +419,47 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		FAA628642B986D160064482E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FAA6286E2B986D160064482E /* ActionViewController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FAA6288E2B986D830064482E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FAA628982B986D830064482E /* ActionRequestHandler.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		FAA628742B986D160064482E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = FAA628672B986D160064482E /* OpenInLiveArt */;
+			targetProxy = FAA628732B986D160064482E /* PBXContainerItemProxy */;
+		};
+		FAA6289D2B986D830064482E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = FAA628912B986D830064482E /* asdasdasd */;
+			targetProxy = FAA6289C2B986D830064482E /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		FAA6286F2B986D160064482E /* MainInterface.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				FAA628702B986D160064482E /* Base */,
+			);
+			name = MainInterface.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		FA3261962B8F173A00C1E5B2 /* Debug */ = {
@@ -377,6 +584,7 @@
 		FA3261992B8F173A00C1E5B2 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
@@ -388,6 +596,7 @@
 				INFOPLIST_FILE = LiveArt/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = LiveArt;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.video";
+				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "Saving Live Photos to Library";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -409,6 +618,7 @@
 		FA32619A2B8F173A00C1E5B2 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
@@ -420,6 +630,7 @@
 				INFOPLIST_FILE = LiveArt/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = LiveArt;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.video";
+				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "Saving Live Photos to Library";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -432,6 +643,106 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = me.xikai.LiveArt;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		FAA628772B986D160064482E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = TVRHF7U882;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = OpenInLiveArt/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = OpenInLiveArt;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = me.xikai.LiveArt.OpenInLiveArt;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		FAA628782B986D160064482E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = TVRHF7U882;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = OpenInLiveArt/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = OpenInLiveArt;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = me.xikai.LiveArt.OpenInLiveArt;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		FAA628A02B986D830064482E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = TVRHF7U882;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = asdasdasd/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = asdasdasd;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = me.xikai.LiveArt.asdasdasd;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		FAA628A12B986D830064482E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = TVRHF7U882;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = asdasdasd/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = asdasdasd;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = me.xikai.LiveArt.asdasdasd;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -455,6 +766,24 @@
 			buildConfigurations = (
 				FA3261992B8F173A00C1E5B2 /* Debug */,
 				FA32619A2B8F173A00C1E5B2 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		FAA628762B986D160064482E /* Build configuration list for PBXNativeTarget "OpenInLiveArt" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FAA628772B986D160064482E /* Debug */,
+				FAA628782B986D160064482E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		FAA6289F2B986D830064482E /* Build configuration list for PBXNativeTarget "asdasdasd" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FAA628A02B986D830064482E /* Debug */,
+				FAA628A12B986D830064482E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
