@@ -66,7 +66,7 @@ func transcodeLive(_ liveType: LiveType, for rawVideoFileURL: URL, setProgress: 
             let scaledHeight = originalSize.height * scaleFactor
             let scaledWidth = originalSize.width * scaleFactor
             let offsetY = (scaledHeight - targetSize.height) / 2
-            let offsetX = (scaledWidth - targetSize.width) / 3.65
+            let offsetX = (scaledWidth - targetSize.width) / 2
             
             var transform = compositionTrack.preferredTransform // Handle video orientation
             // Apply scale and translation to center crop
@@ -157,9 +157,9 @@ func transcodeLive(_ liveType: LiveType, for rawVideoFileURL: URL, setProgress: 
         Timer.scheduledTimer(withTimeInterval: 0.5, repeats: true) { timer in
             withAnimation {
                 if liveType == .Wallpaper {
-                    setProgress(Double(exporter.progress * 50.0) + 50, nil)
+                    setProgress(Double(exporter.progress * 100.0), nil)
                 } else if liveType == .Photo {
-                    setProgress(Double(exporter.progress * 50.0), nil)
+                    setProgress(Double(exporter.progress * 100.0), nil)
                 }
             }
             if exporter.status == .completed || exporter.status == .failed {

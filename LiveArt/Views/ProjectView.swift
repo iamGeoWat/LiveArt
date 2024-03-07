@@ -228,6 +228,7 @@ struct ProjectView: View {
                     if let projectLivePhoto = project.livePhoto,
                        let projectLiveWallpaper = project.liveWallpaper {
                         requestLivePhoto(photoURL: projectLivePhoto.pairedImage, videoURL: projectLivePhoto.pairedVideo, type: .Photo) { livePhotoResult in
+                            print("result", livePhotoResult)
                             livePhoto = livePhotoResult
                         }
                         requestLivePhoto(photoURL: projectLiveWallpaper.pairedImage, videoURL: projectLiveWallpaper.pairedVideo, type: .Wallpaper) { livePhotoResult in
@@ -235,7 +236,6 @@ struct ProjectView: View {
                         }
                     }
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                        print(project.currentStep)
                         withAnimation {
                             goToStep(project.currentStep, with: proxy)
                         }
