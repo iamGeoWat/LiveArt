@@ -17,7 +17,6 @@ struct ProjectView: View {
     @State private var liveWallpaper: PHLivePhoto?
     
     
-    @State private var albumURL: String = "https://music.apple.com/us/playlist/me-and-bae/pl.a13aca4f4f2c45538472de9014057cc0"
     @State private var timer: Timer?
     @State private var isShowingShareSheet = false
     @State private var isShowingInvokeFailed = false
@@ -60,7 +59,7 @@ struct ProjectView: View {
                                 .font(.headline)
                                 .padding(.bottom, 5)
                             HStack {
-                                TextField("Enter URL", text: $albumURL)
+                                TextField("Enter URL", text: $project.albumURLString)
                                     .textFieldStyle(RoundedBorderTextFieldStyle()) // Gives the text field a rounded border
                                     .padding(.trailing, 8)
                                 Button("Fetch") {
@@ -327,7 +326,7 @@ struct ProjectView: View {
     // Function to handle text change
     func fetchAlbum(scrollViewProxy: ScrollViewProxy) {
         let setProgress = setProgressAnimated(progress: $fetchProgress, label: $fetchProgressLabel)
-        fetchAlbumArtVideo(from: albumURL, setProgress: setProgress) { fileURL in
+        fetchAlbumArtVideo(from: project.albumURLString, setProgress: setProgress) { fileURL in
             project.rawVideoFileURL = fileURL
             setProgress(100, "Album Art Downloaded.")
             goToStep(2, with: scrollViewProxy)

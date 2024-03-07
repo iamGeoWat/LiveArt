@@ -18,6 +18,7 @@ class ActionViewController: UIViewController {
             let application = try self.sharedApplication()
             var didSuccess = false
             application.open(filteredURL, options: [:]) { success in
+                
                 didSuccess = success
             }
             return didSuccess
@@ -52,6 +53,7 @@ class ActionViewController: UIViewController {
                         OperationQueue.main.addOperation {
                             if let url = urlItem as? URL {
                                 let res = self.openURLInApp(url: url)
+                                self.extensionContext!.completeRequest(returningItems: [])
                                 print(res)
                             }
                         }

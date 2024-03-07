@@ -97,12 +97,12 @@ struct ContentView: View {
                     ActionSheet(title: Text("Choose Project Type"), message: Text("Choose your Live Photo's video source. You can select a live album art from Apple Music or a video from your Photos library."), buttons: [
                         .cancel(),
                         .default(Text("Create Live Album Art")) {
-                            let newAlbumProject = Project(name: "New Project", type: .LiveAlbum)
+                            let newAlbumProject = Project(type: .LiveAlbum)
                             modelContext.insert(newAlbumProject)
                             presentedProjects.append(newAlbumProject)
                         },
                         .default(Text("Create Live Photo from Video")) {
-                            let newVideoProject = Project(name: "New Project", type: .UploadedVideo)
+                            let newVideoProject = Project(type: .UploadedVideo)
                             modelContext.insert(newVideoProject)
                             presentedProjects.append(newVideoProject)
                         },
@@ -226,8 +226,11 @@ struct ContentView: View {
             GuideView(show: $showGuide)
         }
         .onOpenURL { url in
-            print(url)
-            print(url.lastPathComponent)
+            let albumURLString = URLComponents(url: url, resolvingAgainstBaseURL: true)?.queryItems?.first?.value ?? ""
+            print("got url", albumURLString)
+            let newVideoProject = Project(type: .LiveAlbum, albumURLString: albumURLString)
+            modelContext.insert(newVideoProject)
+            presentedProjects.append(newVideoProject)
         }
     }
 }

@@ -10,8 +10,8 @@ import SwiftData
 
 struct SampleProject {
     static var contents: [Project] = [
-        Project(name: "sos", type: .LiveAlbum),
-        Project(name: "speak_now", type: .UploadedVideo),
+        Project(type: .LiveAlbum),
+        Project(type: .UploadedVideo),
     ]
 }
 

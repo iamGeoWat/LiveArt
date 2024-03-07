@@ -25,15 +25,27 @@ final class Project: ObservableObject {
     var livePhoto: LivePhoto?
     var liveWallpaper: LivePhoto?
     var rawVideoFileURL: URL?
+    var albumURLString: String
     
-    init(name: String, type: ProjectType) {
+    init(type: ProjectType) {
         self.id = UUID()
         self.currentStep = 1
         self.creationDate = todayDate
         self.workInProgress = true
-        self.coverPhoto = nil
+        self.name = "New Project"
+        self.albumURLString = ""
         
         self.type = type
-        self.name = name
+    }
+    
+    init(type: ProjectType, albumURLString: String) {
+        self.id = UUID()
+        self.currentStep = 1
+        self.creationDate = todayDate
+        self.workInProgress = true
+        self.name = "New Project"
+        
+        self.albumURLString = albumURLString
+        self.type = type
     }
 }
