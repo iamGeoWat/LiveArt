@@ -225,6 +225,10 @@ struct ContentView: View {
         }) {
             GuideView(show: $showGuide)
         }
+        .onOpenURL { url in
+            print(url)
+            print(url.lastPathComponent)
+        }
     }
 }
 
