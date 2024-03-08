@@ -20,31 +20,6 @@ struct NewProjectTip: Tip {
     }
 }
 
-struct PatternBackground: View {
-    let dotSize: CGFloat = 3
-    let spacing: CGFloat = 15
-
-    var body: some View {
-        Canvas { context, size in
-            let columns = Int(size.width / (dotSize + spacing))
-            let rows = Int(size.height / (dotSize + spacing))
-
-            for row in 0...rows {
-                for column in 0...columns {
-                    let xPosition = CGFloat(column) * (dotSize + spacing) + spacing / 2
-                    let yPosition = CGFloat(row) * (dotSize + spacing) + spacing / 2
-                    
-                    context.fill(
-                        Path(ellipseIn: CGRect(x: xPosition, y: yPosition, width: dotSize, height: dotSize)),
-                        with: .color(.gray)
-                    )
-                }
-            }
-        }
-        .opacity(0.25)
-    }
-}
-
 struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
     @Query private var projects: [Project]
@@ -57,6 +32,7 @@ struct ContentView: View {
     @State private var showNewProjectTip = false
     @State private var isDeleting = false
     @State private var isConfirmDeleting = false
+    @State private var funMode = false
         
     var body: some View {
         NavigationStack(path: $presentedProjects) {
@@ -65,7 +41,9 @@ struct ContentView: View {
                     Text("LiveArt")
                         .fontDesign(.serif)
                         .font(.largeTitle)
-                        
+                        .onTapGesture {
+                            funMode.toggle()
+                        }
                     Spacer()
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
@@ -210,7 +188,7 @@ struct ContentView: View {
                 }
                 .padding(.horizontal)
             }
-            .background(PatternBackground().ignoresSafeArea())
+            .background(PatternBackgroundView(funMode: funMode).ignoresSafeArea())
             .navigationDestination(for: Project.self) { project in
                 switch project.type {
                 case .LiveAlbum:

@@ -72,3 +72,16 @@ func setProgressAnimated(progress value: Binding<Double>, label: Binding<String>
         }
     }
 }
+
+func normalize(value: Double, from originalRange: (Double, Double), to normalizedRange: (Double, Double)) -> Double {
+    let (originalMin, originalMax) = originalRange
+    let (normalizedMin, normalizedMax) = normalizedRange
+    
+    // Avoid division by zero
+    guard originalMax - originalMin != 0 else { return normalizedMin }
+    
+    let ratio = (normalizedMax - normalizedMin) / (originalMax - originalMin)
+    let normalizedValue = ((value - originalMin) * ratio) + normalizedMin
+    
+    return normalizedValue
+}

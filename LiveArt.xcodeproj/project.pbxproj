@@ -17,6 +17,7 @@
 		2B120D002B9136E5004CC4E6 /* Transcoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B120CFF2B9136E5004CC4E6 /* Transcoder.swift */; };
 		2B120D052B91412F004CC4E6 /* Shortcut.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B120D042B91412F004CC4E6 /* Shortcut.swift */; };
 		2B120D072B97BEC8004CC4E6 /* ProjectUploadedVideoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B120D062B97BEC8004CC4E6 /* ProjectUploadedVideoView.swift */; };
+		2B7B88FE2B9A6D9F005C678A /* PatternBackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B7B88FD2B9A6D9F005C678A /* PatternBackgroundView.swift */; };
 		FA1142662B91CBB600824BEC /* workingLivePhoto.MOV in Resources */ = {isa = PBXBuildFile; fileRef = FA1142652B91CBB600824BEC /* workingLivePhoto.MOV */; };
 		FA1142682B91CBFE00824BEC /* Set LivePhoto Wallpaper.shortcut in Resources */ = {isa = PBXBuildFile; fileRef = FA1142672B91CBFE00824BEC /* Set LivePhoto Wallpaper.shortcut */; };
 		FA11426B2B91D03C00824BEC /* PreviewSupport.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA11426A2B91D03C00824BEC /* PreviewSupport.swift */; };
@@ -70,6 +71,7 @@
 		2B120CFF2B9136E5004CC4E6 /* Transcoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Transcoder.swift; sourceTree = "<group>"; };
 		2B120D042B91412F004CC4E6 /* Shortcut.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shortcut.swift; sourceTree = "<group>"; };
 		2B120D062B97BEC8004CC4E6 /* ProjectUploadedVideoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectUploadedVideoView.swift; sourceTree = "<group>"; };
+		2B7B88FD2B9A6D9F005C678A /* PatternBackgroundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PatternBackgroundView.swift; sourceTree = "<group>"; };
 		FA1142652B91CBB600824BEC /* workingLivePhoto.MOV */ = {isa = PBXFileReference; lastKnownFileType = video.quicktime; path = workingLivePhoto.MOV; sourceTree = "<group>"; };
 		FA1142672B91CBFE00824BEC /* Set LivePhoto Wallpaper.shortcut */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Set LivePhoto Wallpaper.shortcut"; sourceTree = "<group>"; };
 		FA1142692B91CDC600824BEC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
@@ -119,6 +121,7 @@
 				2B120CF92B91365F004CC4E6 /* ActivityView.swift */,
 				2B120CFB2B913672004CC4E6 /* GuideView.swift */,
 				2B120D062B97BEC8004CC4E6 /* ProjectUploadedVideoView.swift */,
+				2B7B88FD2B9A6D9F005C678A /* PatternBackgroundView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -342,6 +345,7 @@
 				FA3261A02B8F24B900C1E5B2 /* Project.swift in Sources */,
 				FA11426B2B91D03C00824BEC /* PreviewSupport.swift in Sources */,
 				2B120D052B91412F004CC4E6 /* Shortcut.swift in Sources */,
+				2B7B88FE2B9A6D9F005C678A /* PatternBackgroundView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
