@@ -34,6 +34,7 @@
 		FAA6286E2B986D160064482E /* ActionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA6286D2B986D160064482E /* ActionViewController.swift */; };
 		FAA628712B986D160064482E /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FAA6286F2B986D160064482E /* MainInterface.storyboard */; };
 		FAA628752B986D160064482E /* OpenInLiveArt.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = FAA628682B986D160064482E /* OpenInLiveArt.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		FACC8A3B2BAEAC2300A8B335 /* VideoCropperView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FACC8A3A2BAEAC2300A8B335 /* VideoCropperView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -90,6 +91,8 @@
 		FAA6286D2B986D160064482E /* ActionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionViewController.swift; sourceTree = "<group>"; };
 		FAA628702B986D160064482E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
 		FAA628722B986D160064482E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		FACC8A3A2BAEAC2300A8B335 /* VideoCropperView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoCropperView.swift; sourceTree = "<group>"; };
+		FACC8A3C2BAEAEA100A8B335 /* sos_raw.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = sos_raw.mp4; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -122,6 +125,7 @@
 				2B120CFB2B913672004CC4E6 /* GuideView.swift */,
 				2B120D062B97BEC8004CC4E6 /* ProjectUploadedVideoView.swift */,
 				2B7B88FD2B9A6D9F005C678A /* PatternBackgroundView.swift */,
+				FACC8A3A2BAEAC2300A8B335 /* VideoCropperView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -129,6 +133,7 @@
 		2B120D032B9137B7004CC4E6 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				FACC8A3C2BAEAEA100A8B335 /* sos_raw.mp4 */,
 				FA1142672B91CBFE00824BEC /* Set LivePhoto Wallpaper.shortcut */,
 				FA1142652B91CBB600824BEC /* workingLivePhoto.MOV */,
 			);
@@ -338,6 +343,7 @@
 				2B120D072B97BEC8004CC4E6 /* ProjectUploadedVideoView.swift in Sources */,
 				2B120CF42B9135E5004CC4E6 /* ProjectView.swift in Sources */,
 				2B120CF82B91364F004CC4E6 /* LivePhotoView.swift in Sources */,
+				FACC8A3B2BAEAC2300A8B335 /* VideoCropperView.swift in Sources */,
 				2B120CF62B91360C004CC4E6 /* ResultView.swift in Sources */,
 				2B120CFC2B913672004CC4E6 /* GuideView.swift in Sources */,
 				2B120CFE2B9136C6004CC4E6 /* ResourceFetcher.swift in Sources */,
