@@ -83,8 +83,8 @@ struct VideoCropperView: View {
 }
 
 struct VideoCropperViewPreview: View {
-    let rawVideoFileURL = Bundle.main.url(forResource: "sos_raw", withExtension: "mp4")!
-    
+    let rawVideoFileURL = URL(string: "/Users/macbook/Documents/LiveArt/LiveArt/Resources/sos_raw.mp4")!
+
     var body: some View {
         VideoCropperView(rawVideoFileURL: rawVideoFileURL)
     }
