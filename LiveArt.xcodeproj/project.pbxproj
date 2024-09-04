@@ -119,8 +119,8 @@
 			isa = PBXGroup;
 			children = (
 				2B120CF32B9135E5004CC4E6 /* ProjectView.swift */,
-				2B120CF52B91360C004CC4E6 /* ResultView.swift */,
 				2B120CF72B91364F004CC4E6 /* LivePhotoView.swift */,
+				2B120CF52B91360C004CC4E6 /* ResultView.swift */,
 				2B120CF92B91365F004CC4E6 /* ActivityView.swift */,
 				2B120CFB2B913672004CC4E6 /* GuideView.swift */,
 				2B120D062B97BEC8004CC4E6 /* ProjectUploadedVideoView.swift */,
@@ -582,7 +582,7 @@
 				DEVELOPMENT_TEAM = TVRHF7U882;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = OpenInLiveArt/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = OpenInLiveArt;
+				INFOPLIST_KEY_CFBundleDisplayName = "Open In LiveArt";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -607,7 +607,7 @@
 				DEVELOPMENT_TEAM = TVRHF7U882;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = OpenInLiveArt/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = OpenInLiveArt;
+				INFOPLIST_KEY_CFBundleDisplayName = "Open In LiveArt";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
