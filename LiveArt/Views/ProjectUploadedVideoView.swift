@@ -356,9 +356,8 @@ struct ProjectUploadedVideoView: View {
     }
     
 }
-
+#if DEBUG
 import SwiftData
-
 struct ProjectUploadedVideoViewPreview: View {
     @Environment(\.modelContext) private var modelContext
     @Query private var projects: [Project]
@@ -375,3 +374,4 @@ struct ProjectUploadedVideoViewPreview: View {
     ProjectUploadedVideoViewPreview()
         .modelContainer(previewContainer)
 }
+#endif

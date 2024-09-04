@@ -334,8 +334,8 @@ struct ProjectView: View {
     }
 }
 
+#if DEBUG
 import SwiftData
-
 struct ProjectViewPreview: View {
     @Environment(\.modelContext) private var modelContext
     @Query private var projects: [Project]
@@ -352,3 +352,4 @@ struct ProjectViewPreview: View {
     ProjectViewPreview()
         .modelContainer(previewContainer)
 }
+#endif

@@ -213,7 +213,10 @@ struct ContentView: View {
     }
 }
 
+#if DEBUG
 #Preview {
     ContentView()
+    
         .modelContainer(previewContainer)
 }
+#endif
