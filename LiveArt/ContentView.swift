@@ -38,7 +38,7 @@ struct ContentView: View {
         NavigationStack(path: $presentedProjects) {
             VStack {
                 HStack(alignment: .center, spacing: 10) {
-                    Text("LiveArt")
+                    Text("AlbumCollect")
                         .fontDesign(.serif)
                         .font(.largeTitle)
                         .onTapGesture {

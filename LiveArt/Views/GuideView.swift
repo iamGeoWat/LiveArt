@@ -15,7 +15,7 @@ struct GuideView: View {
         VStack {
             if page == 0 {
                 Group {
-                    Text("Welcome to LiveArt!")
+                    Text("Welcome to AlbumCollect!")
                         .font(.largeTitle)
                         .fontDesign(.serif)
                     VStack(spacing: 30) {
@@ -29,7 +29,7 @@ struct GuideView: View {
                             HStack {
                                 Image(systemName: "livephoto")
                                     .padding()
-                                Text("LiveArt transforms your favorite Apple Music album art or selected videos into captivating Live Photos and Wallpapers!")
+                                Text("AlbumCollect transforms your favorite Apple Music album art or selected videos into captivating Live Photos and Wallpapers!")
                             }
                         }
                         HStack {
