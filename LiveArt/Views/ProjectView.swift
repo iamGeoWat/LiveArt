@@ -327,9 +327,13 @@ struct ProjectView: View {
     func fetchAlbum(scrollViewProxy: ScrollViewProxy) {
         let setProgress = setProgressAnimated(progress: $fetchProgress, label: $fetchProgressLabel)
         fetchAlbumArtVideo(from: project.albumURLString, setProgress: setProgress) { fileURL in
-            project.rawVideoFileURL = fileURL
-            setProgress(100, "Album Art Downloaded.")
-            goToStep(2, with: scrollViewProxy)
+            if fileURL != nil {
+                project.rawVideoFileURL = fileURL
+                setProgress(100, "Album Art Downloaded.")
+                goToStep(2, with: scrollViewProxy)
+            } else {
+                setProgress(0, "This album does not have animated album cover.")
+            }
         }
     }
 }

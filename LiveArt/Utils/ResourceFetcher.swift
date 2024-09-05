@@ -54,11 +54,13 @@ func parseHTML(html: String) -> Document? {
 
 func getVideoSrc(doc: Document) -> String? {
     do {
-        let videoElement: Element = try doc.select("amp-ambient-video").first()!
-        let videoSrc = try videoElement.attr("src")
-        print(videoSrc)
-
-        return videoSrc
+        if let videoElement: Element = try doc.select("amp-ambient-video").first() {
+            let videoSrc = try videoElement.attr("src")
+            print(videoSrc)
+            return videoSrc
+        } else {
+            return nil
+        }
     } catch {
         print("parser error")
         return nil
