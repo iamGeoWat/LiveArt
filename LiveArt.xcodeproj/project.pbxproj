@@ -444,10 +444,10 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = LiveArt/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = LiveArt;
+				INFOPLIST_KEY_CFBundleDisplayName = AlbumCollect;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.video";
 				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "Saving Live Photos to Library";
-				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Selecting video to convert into Live Photo";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Selecting a video to convert to Live Photo";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -480,10 +480,10 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = LiveArt/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = LiveArt;
+				INFOPLIST_KEY_CFBundleDisplayName = AlbumCollect;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.video";
 				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "Saving Live Photos to Library";
-				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Selecting video to convert into Live Photo";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Selecting a video to convert to Live Photo";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
