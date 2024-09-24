@@ -166,39 +166,6 @@ struct ProjectView: View {
                             .font(.largeTitle)
                             .fontDesign(.monospaced)
                             .padding(.bottom, 30)
-                        VStack(alignment: .leading, spacing: 4) {
-                            Text("Set Live Wallpaper")
-                                .font(.headline)
-                                .padding(.bottom, 5)
-                            Text("You have the option to manually set it via the Photos App or use our one-click shortcut to bring up the wallpaper setting screen.")
-                                .padding(.bottom, 10)
-                            HStack {
-                                Button("Import Shortcut") {
-                                    isShowingShareSheet = true
-                                }
-                                .buttonStyle(BorderedButtonStyle())
-                                .sheet(isPresented: $isShowingShareSheet) {
-                                    if let shortcutURL = getShortcutURL() {
-                                        ActivityView(activityItems: [shortcutURL])
-                                    }
-                                }
-                                Button("Set") {
-                                    invokeShortcut(completion: { success in
-                                        if !success {
-                                            isShowingInvokeFailed = true
-                                        }
-                                    })
-                                }
-                                .buttonStyle(BorderedButtonStyle())
-                                .alert("Set failed. Please import the shortcut to your Shortcut App first.", isPresented: $isShowingInvokeFailed) {
-                                    Button("OK", role: .cancel) {}
-                                }
-                                Spacer()
-                            }
-                        }
-                        .frame(maxWidth: .infinity)
-                        .cornerRadius(10)
-                        .padding(.bottom, 10)
                         VStack {
                             VStack {
                                 ResultView(livePhoto: livePhoto, liveWallpaper: liveWallpaper) { liveType in

@@ -21,6 +21,7 @@
 		FA1142662B91CBB600824BEC /* workingLivePhoto.MOV in Resources */ = {isa = PBXBuildFile; fileRef = FA1142652B91CBB600824BEC /* workingLivePhoto.MOV */; };
 		FA1142682B91CBFE00824BEC /* Set LivePhoto Wallpaper.shortcut in Resources */ = {isa = PBXBuildFile; fileRef = FA1142672B91CBFE00824BEC /* Set LivePhoto Wallpaper.shortcut */; };
 		FA11426B2B91D03C00824BEC /* PreviewSupport.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA11426A2B91D03C00824BEC /* PreviewSupport.swift */; };
+		FA2795D12CA298DB009F17A6 /* BackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA2795D02CA298D8009F17A6 /* BackgroundView.swift */; };
 		FA32618C2B8F173900C1E5B2 /* LiveArtApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA32618B2B8F173900C1E5B2 /* LiveArtApp.swift */; };
 		FA32618E2B8F173900C1E5B2 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA32618D2B8F173900C1E5B2 /* ContentView.swift */; };
 		FA3261922B8F173A00C1E5B2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FA3261912B8F173A00C1E5B2 /* Assets.xcassets */; };
@@ -61,6 +62,7 @@
 		FA1142672B91CBFE00824BEC /* Set LivePhoto Wallpaper.shortcut */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Set LivePhoto Wallpaper.shortcut"; sourceTree = "<group>"; };
 		FA1142692B91CDC600824BEC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		FA11426A2B91D03C00824BEC /* PreviewSupport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewSupport.swift; sourceTree = "<group>"; };
+		FA2795D02CA298D8009F17A6 /* BackgroundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundView.swift; sourceTree = "<group>"; };
 		FA3261882B8F173900C1E5B2 /* LiveArt.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LiveArt.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FA32618B2B8F173900C1E5B2 /* LiveArtApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveArtApp.swift; sourceTree = "<group>"; };
 		FA32618D2B8F173900C1E5B2 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -93,6 +95,7 @@
 		2B120CF22B9135C7004CC4E6 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				FA2795D02CA298D8009F17A6 /* BackgroundView.swift */,
 				2B120CF32B9135E5004CC4E6 /* ProjectView.swift */,
 				2B120CF72B91364F004CC4E6 /* LivePhotoView.swift */,
 				2B120CF52B91360C004CC4E6 /* ResultView.swift */,
@@ -278,6 +281,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FA2795D12CA298DB009F17A6 /* BackgroundView.swift in Sources */,
 				FA32618E2B8F173900C1E5B2 /* ContentView.swift in Sources */,
 				FA32618C2B8F173900C1E5B2 /* LiveArtApp.swift in Sources */,
 				2B120CFA2B91365F004CC4E6 /* ActivityView.swift in Sources */,

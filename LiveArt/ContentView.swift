@@ -28,8 +28,7 @@ struct ContentView: View {
     @State private var isShowingShareSheet = false
     @State private var showingActionSheet = false
     @State private var presentedProjects: [Project] = []
-    @State private var showGuide = false
-    @State private var showNewProjectTip = false
+    @State private var showGuide = true
     @State private var isDeleting = false
     @State private var isConfirmDeleting = false
     @State private var funMode = false
@@ -88,10 +87,6 @@ struct ContentView: View {
                 }
                 .padding(.horizontal) // Padding to the edges of the screen
                 .padding(.bottom, 10)
-                if showNewProjectTip {
-                    TipView(NewProjectTip(), arrowEdge: .top)
-                        .padding()
-                }
                 Spacer()
                 HStack(alignment: .firstTextBaseline, spacing: 10) {
                     Text("Projects")
@@ -188,7 +183,7 @@ struct ContentView: View {
                 }
                 .padding(.horizontal)
             }
-            .background(PatternBackgroundView(funMode: funMode).ignoresSafeArea())
+            .background(BackgroundView().ignoresSafeArea())
             .navigationDestination(for: Project.self) { project in
                 switch project.type {
                 case .LiveAlbum:
@@ -198,9 +193,7 @@ struct ContentView: View {
                 }
             }
         }
-        .sheet(isPresented: $showGuide, onDismiss: {
-            showNewProjectTip = true
-        }) {
+        .sheet(isPresented: $showGuide) {
             GuideView(show: $showGuide)
         }
         .onOpenURL { url in
